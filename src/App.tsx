@@ -15,6 +15,8 @@ import ConversionSection from './components/ConversionSection';
 import FAQ from './components/FAQ';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import AdminLogin from './components/AdminLogin';
+import AdminDashboard from './components/AdminDashboard';
 
 function ScrollTop() {
   const [show, setShow] = useState(false);
@@ -43,6 +45,16 @@ function ScrollTop() {
 }
 
 export default function App() {
+  const path = window.location.pathname.replace(/\/+$/, '') || '/';
+
+  if (path === '/admin/login') {
+    return <AdminLogin />;
+  }
+
+  if (path === '/admin') {
+    return <AdminDashboard />;
+  }
+
   return (
     <>
       <Navbar />
