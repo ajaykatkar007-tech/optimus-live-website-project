@@ -1,4 +1,5 @@
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { ArrowLeft, LockKeyhole, Mail, ShieldCheck } from 'lucide-react';
 import { signInAdmin } from '../lib/supabase';
 
@@ -39,22 +40,14 @@ export default function AdminLogin() {
                   <p className="text-xs text-slate-400">Solutions</p>
                 </div>
               </div>
-              <h1 className="max-w-md text-4xl font-semibold leading-tight">
-                Secure access to your RCM workspace.
-              </h1>
-              <p className="mt-5 max-w-md text-slate-400">
-                Admin access is protected with Supabase authentication. Your public website remains separate from the admin area.
-              </p>
+              <h1 className="max-w-md text-4xl font-semibold leading-tight">Secure access to your RCM workspace.</h1>
+              <p className="mt-5 max-w-md text-slate-400">Admin access is protected with Supabase authentication. Your public website remains separate from the admin area.</p>
             </div>
             <p className="text-sm text-slate-500">Authorized administrators only.</p>
           </div>
 
           <div className="bg-white p-7 text-slate-900 sm:p-10 lg:p-12">
-            <button
-              type="button"
-              onClick={() => window.location.assign('/')}
-              className="mb-10 inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-900"
-            >
+            <button type="button" onClick={() => window.location.assign('/')} className="mb-10 inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-900">
               <ArrowLeft className="h-4 w-4" />
               Back to website
             </button>
@@ -70,15 +63,7 @@ export default function AdminLogin() {
                 <span className="mb-2 block text-sm font-medium text-slate-700">Admin email</span>
                 <span className="relative block">
                   <Mail className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
-                  <input
-                    type="email"
-                    autoComplete="email"
-                    required
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    placeholder="admin@optimusrcm.com"
-                    className="w-full rounded-xl border border-slate-200 py-3 pl-11 pr-4 outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10"
-                  />
+                  <input type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="admin@optimusrcm.com" className="w-full rounded-xl border border-slate-200 py-3 pl-11 pr-4 outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10" />
                 </span>
               </label>
 
@@ -86,36 +71,18 @@ export default function AdminLogin() {
                 <span className="mb-2 block text-sm font-medium text-slate-700">Password</span>
                 <span className="relative block">
                   <LockKeyhole className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
-                  <input
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    placeholder="Enter your password"
-                    className="w-full rounded-xl border border-slate-200 py-3 pl-11 pr-4 outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10"
-                  />
+                  <input type="password" autoComplete="current-password" required value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Enter your password" className="w-full rounded-xl border border-slate-200 py-3 pl-11 pr-4 outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10" />
                 </span>
               </label>
 
-              {error && (
-                <div role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                  {error}
-                </div>
-              )}
+              {error && <div role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full rounded-xl bg-brand-600 px-5 py-3.5 font-semibold text-white shadow-lg transition hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-60"
-              >
+              <button type="submit" disabled={loading} className="w-full rounded-xl bg-brand-600 px-5 py-3.5 font-semibold text-white shadow-lg transition hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-60">
                 {loading ? 'Signing in…' : 'Sign in to Admin'}
               </button>
             </form>
 
-            <p className="mt-8 text-center text-xs leading-5 text-slate-400">
-              If you do not have administrator credentials, contact the Optimus RCM account owner.
-            </p>
+            <p className="mt-8 text-center text-xs leading-5 text-slate-400">If you do not have administrator credentials, contact the Optimus RCM account owner.</p>
           </div>
         </div>
       </div>
