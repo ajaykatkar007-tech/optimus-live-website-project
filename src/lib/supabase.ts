@@ -32,3 +32,17 @@ export async function submitConsultationRequest(
   }
   return { success: true };
 }
+
+export async function signInAdmin(email: string, password: string) {
+  if (!supabase) {
+    return { error: new Error('Supabase authentication is not configured yet.') };
+  }
+
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  return { error };
+}
+
+export async function signOutAdmin() {
+  if (!supabase) return;
+  await supabase.auth.signOut();
+}
