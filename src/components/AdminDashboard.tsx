@@ -2,6 +2,13 @@ import { useEffect, useState } from 'react';
 import { BarChart3, FileText, LogOut, ShieldCheck, Users } from 'lucide-react';
 import { signOutAdmin, supabase } from '../lib/supabase';
 
+const dashboardCards = [
+  { title: 'Clients', description: 'Manage client practices', Icon: Users },
+  { title: 'Claims', description: 'Track RCM activity', Icon: FileText },
+  { title: 'Denials', description: 'Review denial workflows', Icon: BarChart3 },
+  { title: 'Reports', description: 'View business reporting', Icon: BarChart3 },
+];
+
 export default function AdminDashboard() {
   const [email, setEmail] = useState('');
   const [checking, setChecking] = useState(true);
@@ -81,18 +88,13 @@ export default function AdminDashboard() {
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            ['Clients', 'Manage client practices', Users],
-            ['Claims', 'Track RCM activity', FileText],
-            ['Denials', 'Review denial workflows', BarChart3],
-            ['Reports', 'View business reporting', BarChart3],
-          ].map(([title, description, Icon]) => (
-            <div key={title as string} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          {dashboardCards.map(({ title, description, Icon }) => (
+            <div key={title} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
               <div className="mb-5 grid h-11 w-11 place-items-center rounded-xl bg-brand-50 text-brand-600">
-                {Icon && <Icon className="h-5 w-5" />}
+                <Icon className="h-5 w-5" />
               </div>
-              <h2 className="font-semibold">{title as string}</h2>
-              <p className="mt-1 text-sm text-slate-500">{description as string}</p>
+              <h2 className="font-semibold">{title}</h2>
+              <p className="mt-1 text-sm text-slate-500">{description}</p>
             </div>
           ))}
         </div>
