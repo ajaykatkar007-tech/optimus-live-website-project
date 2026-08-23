@@ -99,5 +99,11 @@ src/
 ## Demo Workspace
 
 The operations and client portal routes use clearly labeled fictional records from `src/lib/demoData.ts`. They are presentation-only and do not replace Supabase authentication or production data. The real `/admin` consultation CRM continues to use authenticated Supabase reads and updates. Production persistence for clients, operations work items, documents, requests, messaging, notes, follow-ups, and assignments requires additional tables and RLS policies.
+
+## Platform Backend
+
+The migration `supabase/migrations/20260823210000_create_rcm_platform_schema.sql` defines the normalized platform foundation: profiles and roles, practices, client users, services, client services, operations work items, notes, activities, follow-ups, assignments, documents, client requests, conversations, messages, and notifications. It also adds conversion metadata to `consultation_requests`, role helpers, indexes, updated-at triggers, and RLS policies for ADMIN, OPERATIONS, and CLIENT access.
+
+The platform data access interfaces are in `src/lib/platformData.ts`. The migration is not applied automatically by the frontend. Review and apply it through the project's Supabase migration workflow, then create explicit Auth/profile records as described in `supabase/seed/README.md`.
 - SEO meta, Open Graph, JSON-LD schema
 - Fully responsive, accessible, HIPAA-focused messaging

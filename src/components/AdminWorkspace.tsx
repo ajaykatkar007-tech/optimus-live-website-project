@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Activity, ArrowLeft, BarChart3, Building2, CheckCircle2, ChevronRight, ClipboardList, FileText, LayoutDashboard, LogOut, Search, Settings, ShieldCheck, Workflow } from 'lucide-react';
 import { DEMO_MODE_LABEL, demoActivity, demoClients, demoWorkItems, operationModules, type DemoWorkItem } from '../lib/demoData';
+import { supabase } from '../lib/supabase';
 
 const adminLinks = [
   { label: 'Dashboard', href: '/admin/overview', icon: LayoutDashboard },
@@ -16,6 +17,15 @@ const adminLinks = [
 ];
 
 function Shell({ children, active }: { children: React.ReactNode; active: string }) {
+  const [checking, setChecking] = useState(Boolean(supabase));
+  useEffect(() => {
+    if (!supabase) return;
+    supabase.auth.getUser().then(({ data, error }) => {
+      if (error || !data.user) window.location.replace('/admin/login');
+      else setChecking(false);
+    });
+  }, []);
+  if (checking) return <div className="grid min-h-screen place-items-center bg-slate-950 text-white">Checking secure session...</div>;
   return <div className="min-h-screen bg-slate-100 text-slate-900"><aside className="fixed inset-y-0 left-0 hidden w-64 border-r border-slate-200 bg-white lg:block"><div className="flex h-20 items-center gap-3 border-b border-slate-100 px-6"><div className="grid h-10 w-10 place-items-center rounded-xl bg-brand-600 text-white"><ShieldCheck className="h-5 w-5" /></div><div><p className="font-bold text-navy-900">Optimus RCM</p><p className="text-xs text-slate-500">Operations platform</p></div></div><nav className="space-y-1 p-4">{adminLinks.map(({ label, href, icon: Icon }) => <a key={href} href={href} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium ${active === href ? 'bg-brand-50 text-brand-700' : 'text-slate-600 hover:bg-slate-50'}`}><Icon className="h-4 w-4" />{label}</a>)}</nav><div className="absolute bottom-5 left-4 right-4 rounded-xl bg-navy-950 p-4 text-white"><p className="text-xs font-semibold text-brand-200">{DEMO_MODE_LABEL}</p><p className="mt-2 text-xs leading-5 text-slate-300">Fictional records for client demonstrations. Production data stays in Supabase.</p></div></aside><div className="lg:pl-64"><header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-slate-200 bg-white/95 px-5 backdrop-blur lg:px-8"><div className="flex items-center gap-3"><span className="rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-bold tracking-wide text-amber-800 lg:hidden">DEMO</span><p className="text-sm font-medium text-slate-500">Internal workspace</p></div><div className="flex items-center gap-3"><a href="/" className="hidden items-center gap-2 text-sm text-slate-500 hover:text-slate-900 sm:flex"><ArrowLeft className="h-4 w-4" />Public site</a><a href="/admin/login" className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100"><LogOut className="h-4 w-4" />Exit</a></div></header><main className="mx-auto max-w-7xl p-5 lg:p-8">{children}</main></div></div>;
 }
 
