@@ -81,10 +81,16 @@ export async function updateConsultationRequestStatus(
     return { error: new Error('Supabase is not configured.') };
   }
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('consultation_requests')
     .update({ status })
-    .eq('id', id);
+    .eq('id', id)
+    .select('id')
+    .maybeSingle();
+
+  if (!error && !data) {
+    return { error: new Error('The consultation request could not be updated.') };
+  }
 
   return { error };
 }

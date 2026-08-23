@@ -32,11 +32,31 @@ function RequestDetail({ request, onClose, onStatusChange }: {
   onStatusChange: (status: ConsultationRequestStatus) => Promise<void>;
 }) {
   const [saving, setSaving] = useState(false);
+  const [statusError, setStatusError] = useState('');
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [onClose]);
 
   async function changeStatus(status: ConsultationRequestStatus) {
     setSaving(true);
-    await onStatusChange(status);
-    setSaving(false);
+    setStatusError('');
+    try {
+      await onStatusChange(status);
+    } catch (error) {
+      setStatusError(error instanceof Error ? error.message : 'The status could not be updated.');
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -44,7 +64,7 @@ function RequestDetail({ request, onClose, onStatusChange }: {
       <aside className="h-full w-full max-w-xl overflow-y-auto bg-white p-6 shadow-2xl sm:p-8" role="dialog" aria-modal="true" aria-labelledby="request-detail-title" onMouseDown={(event) => event.stopPropagation()}>
         <div className="flex items-start justify-between gap-4">
           <div><p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-600">Consultation request</p><h2 id="request-detail-title" className="mt-2 text-2xl font-bold text-navy-900">{request.name}</h2><p className="mt-1 break-all text-sm text-slate-500">Request ID: {request.id}</p></div>
-          <button type="button" onClick={onClose} className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700" aria-label="Close request details"><X className="h-5 w-5" /></button>
+          <button type="button" autoFocus onClick={onClose} className="rounded-lg p-2 text-slate-400 outline-none hover:bg-slate-100 hover:text-slate-700 focus:ring-2 focus:ring-brand-500" aria-label="Close request details"><X className="h-5 w-5" /></button>
         </div>
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <div className="rounded-xl bg-slate-50 p-4"><p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Practice</p><p className="mt-1 font-medium text-slate-800">{request.practice_name || 'Not provided'}</p></div>
@@ -52,7 +72,7 @@ function RequestDetail({ request, onClose, onStatusChange }: {
           <div className="rounded-xl bg-slate-50 p-4"><p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Email</p><a className="mt-1 block break-all font-medium text-brand-700 hover:underline" href={`mailto:${request.email}`}>{request.email}</a></div>
           <div className="rounded-xl bg-slate-50 p-4"><p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Phone</p><p className="mt-1 font-medium text-slate-800">{request.phone || 'Not provided'}</p></div>
         </div>
-        <div className="mt-6 border-t border-slate-200 pt-6"><div className="flex flex-wrap items-center justify-between gap-4"><div><p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Status</p><div className="mt-2"><StatusBadge status={request.status} /></div></div><label className="text-sm font-medium text-slate-700">Update status<select disabled={saving} value={request.status} onChange={(event) => changeStatus(event.target.value as ConsultationRequestStatus)} className="ml-3 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-brand-500">{statuses.map((status) => <option key={status} value={status}>{statusLabels[status]}</option>)}</select></label></div><p className="mt-5 flex items-center gap-2 text-sm text-slate-500"><Clock3 className="h-4 w-4" />Submitted {formatDate(request.created_at)}</p></div>
+        <div className="mt-6 border-t border-slate-200 pt-6"><div className="flex flex-wrap items-center justify-between gap-4"><div><p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Status</p><div className="mt-2"><StatusBadge status={request.status} /></div></div><label className="text-sm font-medium text-slate-700">Update status<select disabled={saving} value={request.status} onChange={(event) => changeStatus(event.target.value as ConsultationRequestStatus)} className="ml-3 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-brand-500">{statuses.map((status) => <option key={status} value={status}>{statusLabels[status]}</option>)}</select></label></div>{statusError && <p role="alert" className="mt-3 text-sm text-red-600">{statusError}</p>}<p className="mt-5 flex items-center gap-2 text-sm text-slate-500"><Clock3 className="h-4 w-4" />Submitted {formatDate(request.created_at)}</p></div>
         <div className="mt-6 border-t border-slate-200 pt-6"><p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Message / notes</p><p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-slate-700">{request.message || 'No message was included with this request.'}</p></div>
       </aside>
     </div>
@@ -101,7 +121,7 @@ export default function AdminDashboard() {
   async function handleStatusChange(status: ConsultationRequestStatus) {
     if (!selectedRequest) return;
     const result = await updateConsultationRequestStatus(selectedRequest.id, status);
-    if (result.error) { setError(result.error.message); return; }
+    if (result.error) { setError(result.error.message); throw result.error; }
     const updated = { ...selectedRequest, status };
     setRequests((current) => current.map((request) => request.id === updated.id ? updated : request));
     setSelectedRequest(updated);
