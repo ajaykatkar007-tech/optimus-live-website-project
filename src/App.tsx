@@ -18,6 +18,9 @@ import Footer from './components/Footer';
 import About from './components/About';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
+import AdminWorkspace from './components/AdminWorkspace';
+import ClientLogin from './components/ClientLogin';
+import ClientPortal from './components/ClientPortal';
 
 function ScrollTop() {
   const [show, setShow] = useState(false);
@@ -54,6 +57,20 @@ export default function App() {
 
   if (path === '/admin') {
     return <AdminDashboard />;
+  }
+
+  if (path === '/client/login') {
+    return <ClientLogin />;
+  }
+
+  if (path === '/client' || path.startsWith('/client/')) {
+    return <ClientPortal page={path.split('/')[2] || 'dashboard'} />;
+  }
+
+  if (path.startsWith('/admin/')) {
+    const segments = path.split('/');
+    const page = segments[2] === 'operations' && segments[3] ? segments[3] : segments[2] || 'overview';
+    return <AdminWorkspace page={page} />;
   }
 
   return (

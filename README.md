@@ -93,5 +93,11 @@ src/
 - 7-question FAQ accordion
 - Contact form with Supabase persistence + success/error states
 - Protected consultation request dashboard with search, filtering, pipeline metrics, detail view, status updates, and CSV export
+- Isolated demo operations workspace at `/admin/operations` with AR, denials, verification, payments, authorizations, billing, credentialing, and enrollment queues
+- Isolated demo client portal at `/client/login` for client dashboard, AR, denials, claims, reports, documents, requests, messages, profile, verification, and authorization views
+
+## Demo Workspace
+
+The operations and client portal routes use clearly labeled fictional records from `src/lib/demoData.ts`. They are presentation-only and do not replace Supabase authentication or production data. The real `/admin` consultation CRM continues to use authenticated Supabase reads and updates. Production persistence for clients, operations work items, documents, requests, messaging, notes, follow-ups, and assignments requires additional tables and RLS policies.
 - SEO meta, Open Graph, JSON-LD schema
 - Fully responsive, accessible, HIPAA-focused messaging
