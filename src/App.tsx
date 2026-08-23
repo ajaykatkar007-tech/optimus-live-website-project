@@ -15,6 +15,7 @@ import ConversionSection from './components/ConversionSection';
 import FAQ from './components/FAQ';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import About from './components/About';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
 
@@ -69,6 +70,7 @@ export default function App() {
         <Testimonials />
         <Calculators />
         <ConversionSection />
+        <About />
         <FAQ />
         <Contact />
       </main>

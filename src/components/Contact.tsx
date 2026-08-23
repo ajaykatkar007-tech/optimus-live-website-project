@@ -66,7 +66,6 @@ export default function Contact() {
     if (res.success) {
       setStatus('success');
       form.reset();
-      window.location.href = 'https://calendly.com';
     } else {
       setStatus('error');
       setErrorMsg(res.error || 'Something went wrong. Please try again.');
@@ -144,10 +143,10 @@ export default function Contact() {
               <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
                 <div className="flex items-center gap-2 text-sm font-semibold text-white">
                   <ShieldCheck className="h-5 w-5 text-success-400" />
-                  HIPAA-secure submission
+                  Secure-minded submission
                 </div>
                 <p className="mt-2 text-xs text-navy-100/60">
-                  Your information is encrypted and handled under strict HIPAA safeguards. We never share your data.
+                  Your request is sent through the configured Supabase connection and used only to respond about RCM services.
                 </p>
               </div>
             </div>

@@ -11,10 +11,10 @@ import {
 import { Reveal, SectionHeading } from './ui';
 
 const REASONS = [
-  { icon: ShieldCheck, title: 'HIPAA Compliant Processes', desc: 'Every workflow, tool, and team member operates under strict HIPAA safeguards.' },
+  { icon: ShieldCheck, title: 'Security-minded processes', desc: 'Careful handling of practice information is built into the way we organize every workflow.' },
   { icon: UserCog, title: 'Dedicated Account Manager', desc: 'One accountable partner who knows your practice, payers, and goals by name.' },
   { icon: ShieldX, title: 'Reduced Claim Denials', desc: 'Proactive edits and clean-claim workflows cut denials before they happen.' },
-  { icon: BarChart3, title: 'Transparent KPI Reporting', desc: 'Live dashboards show exactly where your revenue stands, anytime.' },
+  { icon: BarChart3, title: 'Transparent KPI Reporting', desc: 'Clear reporting keeps attention on the work completed, open issues, and next actions.' },
   { icon: Workflow, title: 'Customized Billing Workflow', desc: 'We adapt to your EHR, specialty, and volume — not the other way around.' },
   { icon: Zap, title: 'Faster Insurance Follow-Up', desc: 'Prioritized AR work that shortens the time from claim to cash.' },
   { icon: Layers, title: 'Scalable RCM Support', desc: 'From a single provider to a multi-location group, we scale with you.' },

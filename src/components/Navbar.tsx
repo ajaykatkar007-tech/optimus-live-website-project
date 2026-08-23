@@ -5,10 +5,10 @@ import { Button } from './ui';
 
 const NAV_LINKS = [
   { label: 'Services', href: '#services' },
+  { label: 'Specialties', href: '#industries' },
   { label: 'Why Optimus', href: '#why' },
   { label: 'Process', href: '#process' },
-  { label: 'Industries', href: '#industries' },
-  { label: 'Results', href: '#results' },
+  { label: 'About', href: '#about' },
   { label: 'FAQ', href: '#faq' },
 ];
 

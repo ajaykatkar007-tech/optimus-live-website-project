@@ -85,12 +85,13 @@ src/
 - 8 outcome-focused "Why Choose Optimus" cards
 - Interactive 9-step revenue cycle timeline
 - 12 specialty industry cards
-- Animated result counters (99%, 35%, 40%, 98%)
+- Outcome-focused results section without unsupported performance claims
 - Auto-rotating testimonial carousel
 - 4 interactive calculators (ROI, Revenue Loss, Denial Rate, AR Days)
 - Conversion CTAs (Free Assessment, Schedule Demo, Download Profile)
 - Insights + Newsletter sections
 - 7-question FAQ accordion
 - Contact form with Supabase persistence + success/error states
+- Protected consultation request dashboard with search, filtering, pipeline metrics, detail view, status updates, and CSV export
 - SEO meta, Open Graph, JSON-LD schema
 - Fully responsive, accessible, HIPAA-focused messaging

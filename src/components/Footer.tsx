@@ -2,10 +2,10 @@ import { ShieldCheck, Mail, ArrowUpRight } from 'lucide-react';
 
 const QUICK_LINKS = [
   { label: 'Services', href: '#services' },
+  { label: 'Specialties', href: '#industries' },
   { label: 'Why Optimus', href: '#why' },
   { label: 'Process', href: '#process' },
-  { label: 'Industries', href: '#industries' },
-  { label: 'Results', href: '#results' },
+  { label: 'About', href: '#about' },
   { label: 'FAQ', href: '#faq' },
 ];
 
@@ -16,12 +16,6 @@ const SERVICES = [
   { label: 'Denial Management', href: '#services' },
   { label: 'Prior Authorization', href: '#services' },
   { label: 'Credentialing', href: '#services' },
-];
-
-const LEGAL = [
-  { label: 'Privacy Policy', href: '#' },
-  { label: 'HIPAA Statement', href: '#' },
-  { label: 'Terms of Service', href: '#' },
 ];
 
 export default function Footer() {
@@ -105,13 +99,6 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
-            <ul className="mt-6 space-y-2.5">
-              {LEGAL.map((l) => (
-                <li key={l.label}>
-                  <a href={l.href} className="text-sm text-navy-100/50 transition-colors hover:text-brand-300">{l.label}</a>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
 
@@ -121,7 +108,7 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-2 text-xs text-navy-100/50">
             <ShieldCheck className="h-4 w-4 text-success-400" />
-            HIPAA Compliant · SOC 2 Aligned · US-Based RCM Team
+            Security-minded workflows · US-focused RCM support
           </div>
         </div>
       </div>
