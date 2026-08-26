@@ -21,6 +21,7 @@ import AdminDashboard from './components/AdminDashboard';
 import AdminWorkspace from './components/AdminWorkspace';
 import ClientLogin from './components/ClientLogin';
 import ClientPortal from './components/ClientPortal';
+import LeadHunter from './components/LeadHunter';
 
 function ScrollTop() {
   const [show, setShow] = useState(false);
@@ -57,6 +58,10 @@ export default function App() {
 
   if (path === '/admin') {
     return <AdminDashboard />;
+  }
+
+  if (path === '/admin/lead-hunter') {
+    return <LeadHunter />;
   }
 
   if (path === '/client/login') {
