@@ -23,6 +23,8 @@ export type GooglePlaceLead = {
   reviewCount?: number;
   businessStatus?: string;
   types?: string[];
+  providers?: number;
+  locations?: number;
   reason: string;
 };
 
