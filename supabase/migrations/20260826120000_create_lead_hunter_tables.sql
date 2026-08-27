@@ -9,6 +9,19 @@ create table if not exists public.lead_hunter_daily_usage (
   updated_at timestamptz not null default now()
 );
 
+do $$
+begin
+  if not exists (
+    select 1 from pg_constraint
+    where conname = 'lead_hunter_daily_usage_capacity_check'
+  ) then
+    alter table public.lead_hunter_daily_usage
+      add constraint lead_hunter_daily_usage_capacity_check
+      check (used_leads + reserved_leads <= 20);
+  end if;
+end;
+$$;
+
 create table if not exists public.lead_hunter_leads (
   id uuid primary key default gen_random_uuid(),
   place_id text not null unique,
@@ -57,9 +70,16 @@ declare
   available integer;
   granted integer;
 begin
+  if requested is null or requested <= 0 then
+    return 0;
+  end if;
+
   insert into public.lead_hunter_daily_usage (usage_date) values (current_date) on conflict (usage_date) do nothing;
-  select 20 - reserved_leads into available from public.lead_hunter_daily_usage where usage_date = current_date for update;
-  granted := greatest(0, least(requested, available));
+  select 20 - used_leads - reserved_leads into available
+  from public.lead_hunter_daily_usage
+  where usage_date = current_date
+  for update;
+  granted := least(requested, greatest(0, available));
   if granted > 0 then
     update public.lead_hunter_daily_usage set reserved_leads = reserved_leads + granted, search_count = search_count + 1, updated_at = now() where usage_date = current_date;
   end if;
@@ -69,10 +89,25 @@ $$;
 
 create or replace function public.finalize_lead_hunter_capacity(reserved integer, actual integer)
 returns void language plpgsql security definer set search_path = public as $$
+declare
+  released integer;
+  consumed integer;
 begin
+  if reserved is null or reserved <= 0 then
+    return;
+  end if;
+
+  -- Lock the daily row so finalization cannot race with another reservation.
+  select least(reserved, reserved_leads) into released
+  from public.lead_hunter_daily_usage
+  where usage_date = current_date
+  for update;
+  released := greatest(0, coalesce(released, 0));
+  consumed := greatest(0, least(coalesce(actual, 0), released));
+
   update public.lead_hunter_daily_usage
-  set reserved_leads = greatest(0, reserved_leads - greatest(0, reserved)),
-      used_leads = least(20, used_leads + greatest(0, least(actual, reserved))),
+  set reserved_leads = reserved_leads - released,
+      used_leads = used_leads + consumed,
       updated_at = now()
   where usage_date = current_date;
 end;
