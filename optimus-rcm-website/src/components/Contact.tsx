@@ -4,9 +4,7 @@ import {
   Send,
   CheckCircle2,
   AlertCircle,
-  Phone,
   Mail,
-  MapPin,
   ShieldCheck,
   Clock,
 } from 'lucide-react';

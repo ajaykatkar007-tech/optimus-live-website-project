@@ -43,33 +43,27 @@ CREATE TABLE IF NOT EXISTS consultation_requests (
   status text NOT NULL DEFAULT 'new',
   created_at timestamptz NOT NULL DEFAULT now()
 );
-
 CREATE INDEX IF NOT EXISTS consultation_requests_created_at_idx
   ON consultation_requests (created_at DESC);
-
 ALTER TABLE consultation_requests ENABLE ROW LEVEL SECURITY;
-
 -- Public can submit leads (no-auth marketing site)
 DROP POLICY IF EXISTS "anon_insert_consultation_requests" ON consultation_requests;
 CREATE POLICY "anon_insert_consultation_requests"
   ON consultation_requests FOR INSERT
   TO anon, authenticated
   WITH CHECK (true);
-
 -- Only authenticated staff can read leads
 DROP POLICY IF EXISTS "auth_select_consultation_requests" ON consultation_requests;
 CREATE POLICY "auth_select_consultation_requests"
   ON consultation_requests FOR SELECT
   TO authenticated
   USING (true);
-
 -- Only authenticated staff can update lead status
 DROP POLICY IF EXISTS "auth_update_consultation_requests" ON consultation_requests;
 CREATE POLICY "auth_update_consultation_requests"
   ON consultation_requests FOR UPDATE
   TO authenticated
   USING (true) WITH CHECK (true);
-
 -- Only authenticated staff can delete leads
 DROP POLICY IF EXISTS "auth_delete_consultation_requests" ON consultation_requests;
 CREATE POLICY "auth_delete_consultation_requests"
