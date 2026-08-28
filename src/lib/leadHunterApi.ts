@@ -26,7 +26,10 @@ export type GooglePlaceLead = {
   providers?: number;
   locations?: number;
   reason: string;
+  status?: LeadHunterStatus;
 };
+
+export type LeadHunterStatus = 'NEW' | 'SAVED' | 'CONTACTED' | 'NOT_A_FIT';
 
 export async function searchLeadHunter(filters: LeadHunterFilters) {
   if (!supabase) throw new Error('Supabase is not configured.');
@@ -42,4 +45,18 @@ export async function searchLeadHunter(filters: LeadHunterFilters) {
     leads: GooglePlaceLead[];
     usage: { dailyLimit: number; used: number; remaining: number };
   };
+}
+
+export async function updateLeadHunterStatus(placeId: string, status: LeadHunterStatus) {
+  if (!supabase) throw new Error('Supabase is not configured.');
+
+  const { data, error } = await supabase
+    .from('lead_hunter_leads')
+    .update({ status })
+    .eq('place_id', placeId)
+    .select('place_id')
+    .maybeSingle();
+
+  if (error) throw error;
+  if (!data) throw new Error('The lead status could not be updated.');
 }

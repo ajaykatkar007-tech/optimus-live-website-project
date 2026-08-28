@@ -153,6 +153,13 @@ export default {
       await ctx.supabaseAdmin.from('lead_hunter_leads').upsert(rows, { onConflict: 'place_id', ignoreDuplicates: false });
     }
 
+    const { data: savedLeads } = await ctx.supabaseAdmin
+      .from('lead_hunter_leads')
+      .select('place_id, status')
+      .in('place_id', uniqueLeads.map((lead: any) => lead.id));
+    const statuses = new Map((savedLeads ?? []).map((lead: any) => [lead.place_id, lead.status]));
+    const leadsWithStatus = uniqueLeads.map((lead: any) => ({ ...lead, status: statuses.get(lead.id) ?? 'NEW' }));
+
     const { data: usage } = await ctx.supabaseAdmin
       .from('lead_hunter_daily_usage')
       .select('used_leads')
@@ -160,7 +167,7 @@ export default {
       .maybeSingle();
 
     return json({
-      leads: uniqueLeads,
+      leads: leadsWithStatus,
       usage: { dailyLimit: 20, used: usage?.used_leads ?? uniqueLeads.length, remaining: Math.max(0, 20 - (usage?.used_leads ?? uniqueLeads.length)) },
     });
   }),
