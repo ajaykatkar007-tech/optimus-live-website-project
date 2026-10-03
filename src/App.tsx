@@ -9,7 +9,6 @@ import WhyChooseUs from './components/WhyChooseUs';
 import Process from './components/Process';
 import Industries from './components/Industries';
 import Results from './components/Results';
-import Testimonials from './components/Testimonials';
 import Calculators from './components/Calculators';
 import ConversionSection from './components/ConversionSection';
 import FAQ from './components/FAQ';
@@ -54,7 +53,6 @@ export default function App() {
         <Process />
         <Industries />
         <Results />
-        <Testimonials />
         <Calculators />
         <ConversionSection />
         <FAQ />
