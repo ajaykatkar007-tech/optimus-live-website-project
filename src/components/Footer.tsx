@@ -95,7 +95,6 @@ export default function Footer() {
             <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-white">Contact</h4>
             <ul className="mt-4 space-y-2.5">
               <li><a href="mailto:ajay@optimusrcm.com" className="text-sm transition-colors hover:text-brand-300">ajay@optimusrcm.com</a></li>
-              <li><a href="tel:+18885550142" className="text-sm transition-colors hover:text-brand-300">(888) 555-0142</a></li>
               <li className="pt-2">
                 <a
                   href="#contact"
