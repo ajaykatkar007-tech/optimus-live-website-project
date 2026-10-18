@@ -27,10 +27,6 @@ export default function Navbar() {
     ? 'rounded-full px-4 py-2 text-sm font-medium text-navy-700 transition-colors hover:bg-brand-50 hover:text-brand-700'
     : 'rounded-full px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/15 hover:text-white';
 
-  const mobileLinkClasses = scrolled
-    ? 'rounded-xl px-4 py-3 text-sm font-medium text-navy-700 hover:bg-brand-50'
-    : 'rounded-xl px-4 py-3 text-sm font-medium text-white hover:bg-white/10';
-
   return (
     <motion.header
       initial={{ y: -80, opacity: 0 }}

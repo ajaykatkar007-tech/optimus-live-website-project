@@ -85,12 +85,25 @@ src/
 - 8 outcome-focused "Why Choose Optimus" cards
 - Interactive 9-step revenue cycle timeline
 - 12 specialty industry cards
-- Animated result counters (99%, 35%, 40%, 98%)
+- Outcome-focused results section without unsupported performance claims
 - Auto-rotating testimonial carousel
 - 4 interactive calculators (ROI, Revenue Loss, Denial Rate, AR Days)
 - Conversion CTAs (Free Assessment, Schedule Demo, Download Profile)
 - Insights + Newsletter sections
 - 7-question FAQ accordion
 - Contact form with Supabase persistence + success/error states
+- Protected consultation request dashboard with search, filtering, pipeline metrics, detail view, status updates, and CSV export
+- Isolated demo operations workspace at `/admin/operations` with AR, denials, verification, payments, authorizations, billing, credentialing, and enrollment queues
+- Isolated demo client portal at `/client/login` for client dashboard, AR, denials, claims, reports, documents, requests, messages, profile, verification, and authorization views
+
+## Demo Workspace
+
+The operations and client portal routes use clearly labeled fictional records from `src/lib/demoData.ts`. They are presentation-only and do not replace Supabase authentication or production data. The real `/admin` consultation CRM continues to use authenticated Supabase reads and updates. Production persistence for clients, operations work items, documents, requests, messaging, notes, follow-ups, and assignments requires additional tables and RLS policies.
+
+## Platform Backend
+
+The migration `supabase/migrations/20260823210000_create_rcm_platform_schema.sql` defines the normalized platform foundation: profiles and roles, practices, client users, services, client services, operations work items, notes, activities, follow-ups, assignments, documents, client requests, conversations, messages, and notifications. It also adds conversion metadata to `consultation_requests`, role helpers, indexes, updated-at triggers, and RLS policies for ADMIN, OPERATIONS, and CLIENT access.
+
+The platform data access interfaces are in `src/lib/platformData.ts`. The migration is not applied automatically by the frontend. Review and apply it through the project's Supabase migration workflow, then create explicit Auth/profile records as described in `supabase/seed/README.md`.
 - SEO meta, Open Graph, JSON-LD schema
 - Fully responsive, accessible, HIPAA-focused messaging

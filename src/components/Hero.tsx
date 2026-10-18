@@ -14,17 +14,17 @@ import {
 import { Button } from './ui';
 
 const TRUST_BADGES = [
-  { icon: ShieldCheck, label: 'HIPAA Compliant' },
+  { icon: ShieldCheck, label: 'Security-minded workflows' },
   { icon: Users, label: 'Experienced RCM Team' },
   { icon: Zap, label: 'Faster Payments' },
   { icon: UserCog, label: 'Dedicated Account Manager' },
 ];
 
 const KPI_CARDS = [
-  { icon: FileCheck2, value: '99%', label: 'Clean Claims', accent: 'from-brand-500 to-brand-700' },
-  { icon: Zap, value: 'Faster', label: 'Insurance Payments', accent: 'from-accent-500 to-brand-600' },
-  { icon: Clock, value: 'Reduced', label: 'AR Days', accent: 'from-success-500 to-brand-600' },
-  { icon: BarChart3, value: 'Transparent', label: 'Reporting', accent: 'from-navy-700 to-brand-600' },
+  { icon: FileCheck2, value: 'Clean', label: 'Claims workflows', accent: 'from-brand-500 to-brand-700' },
+  { icon: Zap, value: 'Active', label: 'Payer follow-up', accent: 'from-accent-500 to-brand-600' },
+  { icon: Clock, value: 'Focused', label: 'AR work queues', accent: 'from-success-500 to-brand-600' },
+  { icon: BarChart3, value: 'Clear', label: 'Revenue visibility', accent: 'from-navy-700 to-brand-600' },
 ];
 
 export default function Hero() {
@@ -57,8 +57,8 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.05 }}
               className="mt-6 font-display text-4xl font-bold leading-[1.05] text-white sm:text-5xl md:text-6xl lg:text-[4.25rem]"
             >
-              Maximize Revenue.{' '}
-              <span className="text-gradient-light">Minimize Denials.</span>
+              Turn your revenue cycle{' '}
+              <span className="text-gradient-light">into a growth engine.</span>
             </motion.h1>
 
             <motion.p
@@ -144,7 +144,7 @@ export default function Hero() {
             >
               <div className="flex items-center gap-2 text-sm font-medium text-white">
                 <TrendingUp className="h-4 w-4 text-success-400" />
-                35% faster collections on average
+                Practical RCM support for growing practices
               </div>
             </motion.div>
           </motion.div>

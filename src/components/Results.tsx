@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
 import { FileCheck2, Zap, Clock, Smile, ArrowRight } from 'lucide-react';
-import { Reveal, SectionHeading, AnimatedCounter, Button } from './ui';
+import { Reveal, SectionHeading, Button } from './ui';
 
-const STATS = [
-  { icon: FileCheck2, value: 99, suffix: '%', label: 'Clean Claim Rate', accent: 'from-brand-500 to-brand-700' },
-  { icon: Zap, value: 35, suffix: '%', label: 'Faster Collections', accent: 'from-accent-500 to-brand-600' },
-  { icon: Clock, value: 40, suffix: '%', label: 'Reduction in AR Days', accent: 'from-success-500 to-brand-600' },
-  { icon: Smile, value: 98, suffix: '%', label: 'Client Satisfaction', accent: 'from-navy-700 to-brand-600' },
+const OUTCOMES = [
+  { icon: FileCheck2, title: 'Cleaner claims', label: 'More disciplined preparation and coding workflows.', accent: 'from-brand-500 to-brand-700' },
+  { icon: Zap, title: 'Faster follow-up', label: 'Prioritized AR work that keeps payer conversations moving.', accent: 'from-accent-500 to-brand-600' },
+  { icon: Clock, title: 'Better visibility', label: 'Clearer attention on aging balances and denial patterns.', accent: 'from-success-500 to-brand-600' },
+  { icon: Smile, title: 'More time for care', label: 'Less administrative friction for your practice team.', accent: 'from-navy-700 to-brand-600' },
 ];
 
 export default function Results() {
@@ -18,20 +18,20 @@ export default function Results() {
 
       <div className="container-px relative">
         <Reveal>
-          <SectionHeading
+            <SectionHeading
             dark
-            eyebrow="Results That Speak"
+            eyebrow="Outcomes That Matter"
             title={
               <>
                 <span className="text-gradient-light">Measurable impact</span> on your revenue cycle
               </>
             }
-            subtitle="The metrics our clients see after partnering with Optimus. Your results may vary based on specialty, payer mix, and starting workflow."
+            subtitle="A focused revenue-cycle operation helps your team spend less time chasing preventable issues and more time caring for patients."
           />
         </Reveal>
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {STATS.map((s, i) => (
+          {OUTCOMES.map((s, i) => (
             <Reveal key={s.label} delay={i * 0.08}>
               <motion.div
                 whileHover={{ y: -6 }}
@@ -40,10 +40,8 @@ export default function Results() {
                 <div className={`mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br ${s.accent} shadow-glow`}>
                   <s.icon className="h-7 w-7 text-white" />
                 </div>
-                <div className="mt-5 font-display text-4xl font-bold text-white sm:text-5xl">
-                  <AnimatedCounter value={s.value} suffix={s.suffix} />
-                </div>
-                <div className="mt-2 text-sm font-medium text-navy-100/70">{s.label}</div>
+                <div className="mt-5 font-display text-2xl font-bold text-white sm:text-3xl">{s.title}</div>
+                <div className="mt-2 text-sm font-medium leading-6 text-navy-100/70">{s.label}</div>
               </motion.div>
             </Reveal>
           ))}

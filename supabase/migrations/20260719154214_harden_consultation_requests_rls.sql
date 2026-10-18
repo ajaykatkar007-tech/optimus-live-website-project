@@ -83,7 +83,6 @@ BEGIN
       CHECK (message IS NULL OR char_length(message) <= 5000);
   END IF;
 END $$;
-
 -- 2. INSERT policy — validate submitted lead shape (no more WITH CHECK true)
 DROP POLICY IF EXISTS "anon_insert_consultation_requests" ON consultation_requests;
 CREATE POLICY "anon_insert_consultation_requests"
@@ -95,7 +94,6 @@ CREATE POLICY "anon_insert_consultation_requests"
     AND source IN ('contact', 'assessment', 'demo', 'newsletter', 'profile')
     AND (message IS NULL OR char_length(message) <= 5000)
   );
-
 -- 3. UPDATE policy — require a real authenticated user; restrict status values
 DROP POLICY IF EXISTS "auth_update_consultation_requests" ON consultation_requests;
 CREATE POLICY "auth_update_consultation_requests"
@@ -106,7 +104,6 @@ CREATE POLICY "auth_update_consultation_requests"
     auth.uid() IS NOT NULL
     AND status IN ('new', 'contacted', 'qualified', 'scheduled', 'closed', 'spam')
   );
-
 -- 4. DELETE policy — require a real authenticated user
 DROP POLICY IF EXISTS "auth_delete_consultation_requests" ON consultation_requests;
 CREATE POLICY "auth_delete_consultation_requests"
