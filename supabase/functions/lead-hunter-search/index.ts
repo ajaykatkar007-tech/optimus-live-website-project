@@ -32,13 +32,17 @@ function scorePlace(place: any, specialty: string) {
 
   const typeText = [...(place.types ?? []), place.primaryType ?? ''].join(' ').toLowerCase();
   const specialtyText = specialty.toLowerCase();
-  if (
+  const specialtyMatches =
     (specialtyText.includes('dental') && (typeText.includes('dentist') || typeText.includes('dental'))) ||
-    (specialtyText.includes('mri') && typeText.includes('medical')) ||
-    (specialtyText.includes('radiology') && typeText.includes('medical'))
-  ) {
+    ((specialtyText.includes('family medicine') || specialtyText.includes('internal medicine') || specialtyText.includes('primary care')) &&
+      (typeText.includes('doctor') || typeText.includes('physician') || typeText.includes('medical') || typeText.includes('clinic'))) ||
+    (specialtyText.includes('ophthalm') && (typeText.includes('ophthalm') || typeText.includes('eye') || typeText.includes('doctor') || typeText.includes('medical'))) ||
+    (specialtyText.includes('mri') && (typeText.includes('medical') || typeText.includes('imaging'))) ||
+    (specialtyText.includes('radiology') && (typeText.includes('medical') || typeText.includes('radiology') || typeText.includes('imaging')));
+
+  if (specialtyMatches) {
     score += 10;
-    reasons.push('specialty fit');
+    reasons.push('potential specialty fit based on Google Places category');
   }
 
   return {
@@ -150,7 +154,9 @@ export default {
         rating: lead.rating, review_count: lead.reviewCount, business_status: lead.businessStatus,
         types: lead.types, score: lead.score, reason: lead.reason, created_by: ctx.userClaims?.sub,
       }));
-      await ctx.supabaseAdmin.from('lead_hunter_leads').upsert(rows, { onConflict: 'place_id', ignoreDuplicates: false });
+      // A place_id is the stable deduplication key. Do not overwrite an existing row during discovery:
+      // its status and historical lead data must be preserved. Existing rows are read below for status display.
+      await ctx.supabaseAdmin.from('lead_hunter_leads').upsert(rows, { onConflict: 'place_id', ignoreDuplicates: true });
     }
 
     const { data: savedLeads } = await ctx.supabaseAdmin
