@@ -65,6 +65,7 @@ import androidx.media3.transformer.Effects
 import androidx.media3.transformer.ExportException
 import androidx.media3.transformer.ExportResult
 import androidx.media3.effect.Presentation
+import androidx.media3.effect.RgbFilter
 import androidx.media3.transformer.Transformer
 import java.io.File
 import java.text.SimpleDateFormat
@@ -105,6 +106,7 @@ private fun OptimusEditor() {
     var exportedPath by remember { mutableStateOf<String?>(null) }
     var trimStartSeconds by remember { mutableStateOf("0") }
     var trimEndSeconds by remember { mutableStateOf("") }
+    var selectedFilter by remember { mutableStateOf("Original") }
 
     val videoPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument()
@@ -145,8 +147,14 @@ private fun OptimusEditor() {
             .setUri(source)
             .setClippingConfiguration(clippingBuilder.build())
             .build()
+        val videoEffects = mutableListOf<androidx.media3.common.Effect>()
+        videoEffects.add(Presentation.createForHeight(1080))
+        when (selectedFilter) {
+            "B&W" -> videoEffects.add(RgbFilter.createGrayscaleFilter())
+            "Invert" -> videoEffects.add(RgbFilter.createInvertedFilter())
+        }
         val editedItem = EditedMediaItem.Builder(clippedMedia)
-            .setEffects(Effects(emptyList(), listOf(Presentation.createForHeight(1080))))
+            .setEffects(Effects(emptyList(), videoEffects))
             .build()
         val transformer = Transformer.Builder(context)
             .addListener(object : Transformer.Listener {
@@ -253,7 +261,7 @@ private fun OptimusEditor() {
         Spacer(Modifier.height(9.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(9.dp), modifier = Modifier.fillMaxWidth()) {
             ToolTile("Trim / split", Icons.Default.ContentCut, Modifier.weight(1f), "Clip tools are next in the build roadmap.")
-            ToolTile("Filters", Icons.Default.Tune, Modifier.weight(1f), "Filter controls are planned for the next milestone.")
+            ToolTile("Filters", Icons.Default.Tune, Modifier.weight(1f), "Choose a filter below for export.")
             ToolTile("AI tools", Icons.Default.AutoAwesome, Modifier.weight(1f), "AI captions and smart editing are planned.")
         }
 
@@ -274,6 +282,31 @@ private fun OptimusEditor() {
             }
         }
 
+        Spacer(Modifier.height(12.dp))
+        Text("EXPORT FILTER", color = Muted, fontSize = 10.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold)
+        Spacer(Modifier.height(7.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+            listOf("Original", "B&W", "Invert").forEach { filter ->
+                val chosen = selectedFilter == filter
+                if (chosen) {
+                    Button(
+                        onClick = { selectedFilter = filter },
+                        modifier = Modifier.weight(1f),
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 6.dp, vertical = 8.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Violet),
+                        shape = RoundedCornerShape(10.dp)
+                    ) { Text(filter, fontSize = 12.sp) }
+                } else {
+                    OutlinedButton(
+                        onClick = { selectedFilter = filter },
+                        modifier = Modifier.weight(1f),
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 6.dp, vertical = 8.dp),
+                        shape = RoundedCornerShape(10.dp)
+                    ) { Text(filter, fontSize = 12.sp) }
+                }
+            }
+        }
+        Text("Selected filter is applied during MP4 export.", color = Muted, fontSize = 10.sp)
         Spacer(Modifier.height(12.dp))
         Text("TRIM RANGE • SECONDS", color = Muted, fontSize = 10.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(6.dp))
