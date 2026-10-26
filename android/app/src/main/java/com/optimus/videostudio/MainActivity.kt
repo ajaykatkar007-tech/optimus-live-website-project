@@ -38,6 +38,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
@@ -98,6 +99,8 @@ private fun OptimusEditor() {
     var status by remember { mutableStateOf("Choose a video to start editing.") }
     var exporting by remember { mutableStateOf(false) }
     var exportedPath by remember { mutableStateOf<String?>(null) }
+    var trimStartSeconds by remember { mutableStateOf("0") }
+    var trimEndSeconds by remember { mutableStateOf("") }
 
     val videoPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument()
@@ -122,7 +125,23 @@ private fun OptimusEditor() {
         val outputFile = File(outputDir, "Optimus_$stamp.mp4")
         exporting = true
         status = "Exporting MP4 at 1080p…"
-        val editedItem = EditedMediaItem.Builder(MediaItem.fromUri(source))
+        val startMs = (trimStartSeconds.toLongOrNull() ?: 0L).coerceAtLeast(0L) * 1000L
+        val endSeconds = trimEndSeconds.toLongOrNull()?.coerceAtLeast(0L)
+        val endMs = endSeconds?.times(1000L)
+        if (endMs != null && endMs <= startMs) {
+            exporting = false
+            status = "Trim end must be greater than trim start."
+            outputFile.delete()
+            return
+        }
+        val clippingBuilder = MediaItem.ClippingConfiguration.Builder()
+            .setStartPositionMs(startMs)
+        if (endMs != null) clippingBuilder.setEndPositionMs(endMs)
+        val clippedMedia = MediaItem.Builder()
+            .setUri(source)
+            .setClippingConfiguration(clippingBuilder.build())
+            .build()
+        val editedItem = EditedMediaItem.Builder(clippedMedia)
             .setEffects(Effects(emptyList(), listOf(Presentation.createForHeight(1080))))
             .build()
         val transformer = Transformer.Builder(context)
@@ -246,7 +265,28 @@ private fun OptimusEditor() {
             }
         }
 
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(12.dp))
+        Text("TRIM RANGE • SECONDS", color = Muted, fontSize = 10.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold)
+        Spacer(Modifier.height(6.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = trimStartSeconds,
+                onValueChange = { value -> trimStartSeconds = value.filter(Char::isDigit).take(6) },
+                label = { Text("Start (sec)") },
+                singleLine = true,
+                modifier = Modifier.weight(1f)
+            )
+            OutlinedTextField(
+                value = trimEndSeconds,
+                onValueChange = { value -> trimEndSeconds = value.filter(Char::isDigit).take(6) },
+                label = { Text("End (sec)") },
+                placeholder = { Text("Full clip") },
+                singleLine = true,
+                modifier = Modifier.weight(1f)
+            )
+        }
+        Text("Leave End blank to export through the end of the clip.", color = Muted, fontSize = 10.sp)
+        Spacer(Modifier.height(12.dp))
         Card(colors = CardDefaults.cardColors(containerColor = Color(0xFF111A2D)), shape = RoundedCornerShape(15.dp), modifier = Modifier.fillMaxWidth()) {
             Row(Modifier.padding(13.dp), verticalAlignment = Alignment.CenterVertically) {
                 if (exporting) {
