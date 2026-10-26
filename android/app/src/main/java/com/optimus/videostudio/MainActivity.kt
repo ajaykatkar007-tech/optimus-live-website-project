@@ -54,6 +54,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.runtime.DisposableEffect
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.PlayerView
 import androidx.media3.common.MediaItem
 import androidx.media3.transformer.Composition
 import androidx.media3.transformer.EditedMediaItem
@@ -221,20 +225,25 @@ private fun OptimusEditor() {
             colors = CardDefaults.cardColors(containerColor = Color(0xFF101629)),
             shape = RoundedCornerShape(22.dp)
         ) {
-            Box(Modifier.fillMaxSize().background(
-                Brush.radialGradient(listOf(Color(0xFF30265C), Color(0xFF101629)))
-            ), contentAlignment = Alignment.Center) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Box(
-                        modifier = Modifier.size(62.dp).background(Color(0xFF28234B), RoundedCornerShape(20.dp)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(Icons.Default.Movie, contentDescription = null, tint = Mint, modifier = Modifier.size(31.dp))
+            val previewUri = selectedVideo
+            if (previewUri != null) {
+                VideoPreview(previewUri)
+            } else {
+                Box(Modifier.fillMaxSize().background(
+                    Brush.radialGradient(listOf(Color(0xFF30265C), Color(0xFF101629)))
+                ), contentAlignment = Alignment.Center) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Box(
+                            modifier = Modifier.size(62.dp).background(Color(0xFF28234B), RoundedCornerShape(20.dp)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(Icons.Default.Movie, contentDescription = null, tint = Mint, modifier = Modifier.size(31.dp))
+                        }
+                        Spacer(Modifier.height(12.dp))
+                        Text("Your preview appears here", color = Color.White, fontWeight = FontWeight.SemiBold)
+                        Spacer(Modifier.height(4.dp))
+                        Text("Import a video to begin", color = Muted, fontSize = 12.sp)
                     }
-                    Spacer(Modifier.height(12.dp))
-                    Text(if (selectedVideo == null) "Your preview appears here" else videoName, color = Color.White, fontWeight = FontWeight.SemiBold)
-                    Spacer(Modifier.height(4.dp))
-                    Text(if (selectedVideo == null) "Import a video to begin" else "Video selected • Ready for export", color = Muted, fontSize = 12.sp)
                 }
             }
         }
@@ -352,3 +361,30 @@ private fun TimelineTrack(label: String, value: String, color: Color) {
         }
     }
 }
+
+@Composable
+private fun VideoPreview(uri: Uri) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val player = remember(uri) {
+        ExoPlayer.Builder(context).build().apply {
+            setMediaItem(MediaItem.fromUri(uri))
+            prepare()
+            playWhenReady = false
+        }
+    }
+    DisposableEffect(player) {
+        onDispose { player.release() }
+    }
+    AndroidView(
+        modifier = Modifier.fillMaxSize(),
+        factory = { viewContext ->
+            PlayerView(viewContext).apply {
+                this.player = player
+                useController = true
+                setShowBuffering(PlayerView.SHOW_BUFFERING_WHEN_PLAYING)
+            }
+        },
+        update = { it.player = player }
+    )
+}
+
