@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -28,6 +29,9 @@ import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.ContentCut
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.Movie
+import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -107,6 +111,8 @@ private fun OptimusEditor() {
     var trimStartSeconds by remember { mutableStateOf("0") }
     var trimEndSeconds by remember { mutableStateOf("") }
     var selectedFilter by remember { mutableStateOf("Original") }
+    var selectedAudio by remember { mutableStateOf<Uri?>(null) }
+    var audioName by remember { mutableStateOf("No audio selected") }
 
     val videoPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument()
@@ -116,6 +122,16 @@ private fun OptimusEditor() {
             videoName = uri.lastPathSegment?.substringAfterLast('/') ?: "Selected video"
             status = "Clip ready. 1080p export is available."
             exportedPath = null
+        }
+    }
+
+    val audioPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        if (uri != null) {
+            selectedAudio = uri
+            audioName = uri.lastPathSegment?.substringAfterLast('/') ?: "Selected audio"
+            status = "Audio track imported for preview. Audio mixing in export is the next step."
         }
     }
 
@@ -187,6 +203,7 @@ private fun OptimusEditor() {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .background(Brush.verticalGradient(listOf(Color(0xFF17152F), Ink, Color(0xFF080B14))))
             .padding(horizontal = 18.dp, vertical = 16.dp)
     ) {
@@ -281,6 +298,26 @@ private fun OptimusEditor() {
                 TimelineTrack("TEXT", "Titles & captions", Color(0xFFB96AAB))
             }
         }
+
+        Spacer(Modifier.height(10.dp))
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text("AUDIO TRACK", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                Text(audioName, color = Muted, fontSize = 10.sp, maxLines = 1)
+            }
+            OutlinedButton(
+                onClick = { audioPicker.launch(arrayOf("audio/*")) },
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Icon(Icons.Default.MusicNote, contentDescription = null)
+                Spacer(Modifier.width(5.dp))
+                Text("Add audio")
+            }
+        }
+        selectedAudio?.let { audioUri ->
+            AudioTrackControls(uri = audioUri)
+        }
+        Text("Imported audio can be previewed here; mixing it into the exported MP4 is planned next.", color = Muted, fontSize = 10.sp, lineHeight = 14.sp)
 
         Spacer(Modifier.height(12.dp))
         Text("EXPORT FILTER", color = Muted, fontSize = 10.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold)
@@ -421,3 +458,41 @@ private fun VideoPreview(uri: Uri) {
     )
 }
 
+
+
+@Composable
+private fun AudioTrackControls(uri: Uri) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val player = remember(uri) {
+        ExoPlayer.Builder(context).build().apply {
+            setMediaItem(MediaItem.fromUri(uri))
+            prepare()
+            playWhenReady = false
+        }
+    }
+    var playing by remember(uri) { mutableStateOf(false) }
+    DisposableEffect(player) {
+        onDispose { player.release() }
+    }
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().padding(top = 6.dp)) {
+        Button(
+            onClick = {
+                if (player.isPlaying) {
+                    player.pause()
+                    playing = false
+                } else {
+                    player.play()
+                    playing = true
+                }
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF17665E)),
+            shape = RoundedCornerShape(10.dp)
+        ) {
+            Icon(if (playing) Icons.Default.Pause else Icons.Default.PlayArrow, contentDescription = null)
+            Spacer(Modifier.width(5.dp))
+            Text(if (playing) "Pause audio" else "Play audio")
+        }
+        Spacer(Modifier.width(10.dp))
+        Text("Audio preview", color = Muted, fontSize = 11.sp)
+    }
+}
