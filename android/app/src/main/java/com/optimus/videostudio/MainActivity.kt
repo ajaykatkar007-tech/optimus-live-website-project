@@ -175,9 +175,11 @@ private fun OptimusEditor() {
         val transformer = Transformer.Builder(context)
             .addListener(object : Transformer.Listener {
                 override fun onCompleted(composition: Composition, exportResult: ExportResult) {
-                    exporting = false
-                    exportedPath = outputFile.absolutePath
-                    status = "Export complete! Your MP4 is saved in the app Movies folder."
+                    context.mainExecutor.execute {
+                        exporting = false
+                        exportedPath = outputFile.absolutePath
+                        status = "Export complete! Your MP4 is saved in the app Movies folder."
+                    }
                 }
 
                 override fun onError(
@@ -185,9 +187,11 @@ private fun OptimusEditor() {
                     exportResult: ExportResult,
                     exportException: ExportException
                 ) {
-                    exporting = false
-                    status = "Export failed: ${exportException.message ?: "unsupported video format"}"
-                    if (outputFile.exists()) outputFile.delete()
+                    context.mainExecutor.execute {
+                        exporting = false
+                        status = "Export failed: ${exportException.message ?: "unsupported video format"}"
+                        if (outputFile.exists()) outputFile.delete()
+                    }
                 }
             })
             .build()
@@ -383,7 +387,10 @@ private fun OptimusEditor() {
         }
         Spacer(Modifier.height(12.dp))
         Button(
-            onClick = { export1080p() },
+            onClick = {
+                status = "Export tapped — preparing video…"
+                export1080p()
+            },
             enabled = selectedVideo != null && !exporting,
             modifier = Modifier.fillMaxWidth().height(52.dp),
             shape = RoundedCornerShape(16.dp),
