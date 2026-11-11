@@ -1,0 +1,2 @@
+-- Superseded for the website by Netlify Forms.
+-- Kept as migration history; no new Supabase migration is required for contact submissions.

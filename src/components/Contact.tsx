@@ -11,7 +11,6 @@ import {
   Clock,
 } from 'lucide-react';
 import { Reveal, SectionHeading } from './ui';
-import { submitConsultationRequest } from '../lib/supabase';
 
 const SPECIALTIES = [
   'Primary Care',
@@ -64,14 +63,23 @@ export default function Contact() {
       return;
     }
 
-    const res = await submitConsultationRequest(payload);
-    if (res.success) {
+    try {
+      const formData = new FormData(form);
+      formData.set('form-name', 'contact');
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData as unknown as Record<string, string>).toString(),
+      });
+
+      if (!response.ok) throw new Error('Form submission failed');
+
       setStatus('success');
       form.reset();
-      window.location.href = 'https://calendly.com';
-    } else {
+    } catch (error) {
+      console.error('Contact form submission failed:', error);
       setStatus('error');
-      setErrorMsg(res.error || 'Something went wrong. Please try again.');
+      setErrorMsg('We could not submit your request right now. Please try again.');
     }
   };
 
@@ -181,13 +189,16 @@ export default function Contact() {
                   </button>
                 </motion.div>
               ) : (
-                <form onSubmit={onSubmit} className="space-y-5">
+                <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onSubmit={onSubmit} className="space-y-5">
+                  <input type="hidden" name="form-name" value="contact" />
+                  <input type="hidden" name="bot-field" />
                   <div className="grid gap-5 sm:grid-cols-2">
                     <label className="block">
                       <span className="text-sm font-medium text-navy-700/80">Full Name *</span>
                       <input
                         name="name"
                         required
+                        maxLength={200}
                         autoComplete="name"
                         className="mt-1.5 w-full rounded-2xl border border-navy-100 bg-white px-4 py-3 text-sm text-navy-900 shadow-premium outline-none transition focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
                       />
@@ -218,6 +229,7 @@ export default function Contact() {
                       <input
                         name="phone"
                         type="tel"
+                        maxLength={50}
                         autoComplete="tel"
                         className="mt-1.5 w-full rounded-2xl border border-navy-100 bg-white px-4 py-3 text-sm text-navy-900 shadow-premium outline-none transition focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
                       />
@@ -243,6 +255,7 @@ export default function Contact() {
                     <textarea
                       name="message"
                       rows={4}
+                      maxLength={5000}
                       placeholder="Tell us about your practice size, EHR, and what you'd like to improve..."
                       className="mt-1.5 w-full resize-none rounded-2xl border border-navy-100 bg-white px-4 py-3 text-sm text-navy-900 shadow-premium outline-none transition focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
                     />

@@ -9,7 +9,6 @@ Premium medical billing & Revenue Cycle Management website for independent physi
 - **Tailwind CSS 3** (design system, custom navy/blue theme)
 - **Framer Motion** (animations, scroll reveals, carousels)
 - **Lucide React** (icons)
-- **Supabase** (contact form lead storage with RLS)
 
 ## Getting Started
 
@@ -28,27 +27,9 @@ npm run typecheck   # TypeScript type checking
 npm run preview     # preview the production build
 ```
 
-## Environment Variables
+## Contact submissions
 
-Create a `.env` file (already provided in the Bolt environment):
-
-```
-VITE_SUPABASE_URL=<your-supabase-url>
-VITE_SUPABASE_ANON_KEY=<your-supabase-anon-key>
-```
-
-## Database
-
-The `consultation_requests` table stores leads from the contact form. The SQL migration is in `migrations/20260719134538_create_consultation_requests.sql`. Apply it via the Supabase MCP `apply_migration` tool (not the CLI).
-
-### RLS Policies
-
-- **INSERT** (anon + authenticated): validates name, email format, source whitelist, and message length.
-- **SELECT** (authenticated only): staff can read all leads.
-- **UPDATE** (authenticated, `auth.uid() IS NOT NULL`): restricts status to allowed values.
-- **DELETE** (authenticated, `auth.uid() IS NOT NULL`): requires a real user session.
-
-Table-level CHECK constraints provide defense in depth.
+The contact form is handled by Netlify Forms. Submissions are available in the Netlify site dashboard under **Forms**.
 
 ## Project Structure
 
