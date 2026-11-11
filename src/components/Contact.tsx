@@ -68,7 +68,6 @@ export default function Contact() {
     if (res.success) {
       setStatus('success');
       form.reset();
-      window.location.href = 'https://calendly.com';
     } else {
       setStatus('error');
       setErrorMsg(res.error || 'Something went wrong. Please try again.');
@@ -188,6 +187,7 @@ export default function Contact() {
                       <input
                         name="name"
                         required
+                        maxLength={200}
                         autoComplete="name"
                         className="mt-1.5 w-full rounded-2xl border border-navy-100 bg-white px-4 py-3 text-sm text-navy-900 shadow-premium outline-none transition focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
                       />
@@ -218,6 +218,7 @@ export default function Contact() {
                       <input
                         name="phone"
                         type="tel"
+                        maxLength={50}
                         autoComplete="tel"
                         className="mt-1.5 w-full rounded-2xl border border-navy-100 bg-white px-4 py-3 text-sm text-navy-900 shadow-premium outline-none transition focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
                       />
@@ -243,6 +244,7 @@ export default function Contact() {
                     <textarea
                       name="message"
                       rows={4}
+                      maxLength={5000}
                       placeholder="Tell us about your practice size, EHR, and what you'd like to improve..."
                       className="mt-1.5 w-full resize-none rounded-2xl border border-navy-100 bg-white px-4 py-3 text-sm text-navy-900 shadow-premium outline-none transition focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
                     />
