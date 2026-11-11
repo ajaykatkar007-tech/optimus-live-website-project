@@ -8,7 +8,7 @@ export const PERFORMANCE_METRICS = {
   evidenceNote: 'Based on TODO_CONFIRM clients over TODO_CONFIRM months.',
 } as const;
 
-export const CREDIBILITY_FLAGS = {
+export const OPTIMUS_FEE_PCT = 5; // TODO_CONFIRM before publishing or relying on this estimate.\n\nexport const CREDIBILITY_FLAGS = {
   SHOW_SOC2: false, // Enable only after confirming current SOC 2 status.
   SHOW_US_BASED: false, // Enable only if the team is genuinely US-based.
 } as const;

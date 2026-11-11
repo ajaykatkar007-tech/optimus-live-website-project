@@ -9,6 +9,7 @@ import {
   Info,
 } from 'lucide-react';
 import { Reveal, SectionHeading, Button } from './ui';
+import { OPTIMUS_FEE_PCT } from '../lib/siteConfig';
 
 type Tab = 'roi' | 'revenue' | 'denial' | 'ar';
 
@@ -27,6 +28,7 @@ function Field({
   suffix,
   step = 1,
   min = 0,
+  max,
 }: {
   label: string;
   value: number;
@@ -35,6 +37,7 @@ function Field({
   suffix?: string;
   step?: number;
   min?: number;
+  max?: number;
 }) {
   return (
     <label className="block">
@@ -46,7 +49,11 @@ function Field({
           value={value}
           step={step}
           min={min}
-          onChange={(e) => onChange(Number(e.target.value))}
+          max={max}
+          onChange={(e) => {
+            const next = Number(e.target.value);
+            onChange(Number.isFinite(next) ? Math.max(min, max === undefined ? next : Math.min(max, next)) : min);
+          }}
           className="w-full bg-transparent px-2 text-lg font-semibold text-navy-900 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
         {suffix && <span className="text-navy-700/50">{suffix}</span>}
@@ -69,35 +76,47 @@ function RoiCalc() {
   const [monthly, setMonthly] = useState(120000);
   const [currentRate, setCurrentRate] = useState(92);
   const [optimusRate, setOptimusRate] = useState(98);
-  const [fee, setFee] = useState(5);
+  const [fee, setFee] = useState(OPTIMUS_FEE_PCT);
+  const [currentBillingCost, setCurrentBillingCost] = useState(0);
 
   const recovered = useMemo(() => {
-    const currentCollect = monthly * (currentRate / 100);
-    const optimusCollect = monthly * (optimusRate / 100);
-    const gain = optimusCollect - currentCollect;
-    const annualGain = gain * 12;
-    const annualFee = optimusCollect * 12 * (fee / 100);
-    const net = annualGain - annualFee;
-    return { annualGain, annualFee, net, monthlyGain: gain };
-  }, [monthly, currentRate, optimusRate, fee]);
+    const additionalMonthlyCollections = monthly * (optimusRate - currentRate) / 100;
+    const optimusFee = monthly * optimusRate / 100 * fee / 100;
+    const netMonthly = additionalMonthlyCollections + currentBillingCost - optimusFee;
+    return {
+      additionalMonthlyCollections,
+      annualAdditional: additionalMonthlyCollections * 12,
+      annualFee: optimusFee * 12,
+      netMonthly,
+      annualNet: netMonthly * 12,
+    };
+  }, [monthly, currentRate, optimusRate, fee, currentBillingCost]);
 
+  const invalidRateOrder = optimusRate < currentRate;
   return (
     <div className="grid gap-6 md:grid-cols-2">
       <div className="space-y-4">
-        <Field label="Monthly billed charges" value={monthly} onChange={setMonthly} prefix="$" step={1000} />
-        <Field label="Current collection rate" value={currentRate} onChange={setCurrentRate} suffix="%" step={0.5} />
-        <Field label="Expected Optimus collection rate" value={optimusRate} onChange={setOptimusRate} suffix="%" step={0.5} />
-        <Field label="Optimus fee (% of collections)" value={fee} onChange={setFee} suffix="%" step={0.5} />
+        <div>
+          <Field label="Monthly expected payments (allowed amount)" value={monthly} onChange={setMonthly} prefix="$" step={1000} />
+          <p className="mt-1 text-xs text-navy-700/70">Use expected payments from payers, not gross billed charges.</p>
+        </div>
+        <Field label="Current collection rate" value={currentRate} onChange={setCurrentRate} suffix="%" step={0.5} max={100} />
+        <Field label="Expected Optimus collection rate" value={optimusRate} onChange={setOptimusRate} suffix="%" step={0.5} max={100} />
+        <Field label="Current monthly billing cost (staff/vendor)" value={currentBillingCost} onChange={setCurrentBillingCost} prefix="$" step={100} />
+        <Field label="Optimus fee (% of collections)" value={fee} onChange={setFee} suffix="%" step={0.5} max={100} />
+        {invalidRateOrder && <p role="alert" className="text-sm text-amber-700">Expected collection rate should be equal to or higher than the current rate for this comparison.</p>}
+        <p className="text-xs text-navy-700/70">Estimate only. Not a guarantee of results. Actual pricing is provided after assessment.</p>
       </div>
       <div className="space-y-3">
-        <ResultStat label="Additional monthly collections" value={`$${Math.round(recovered.monthlyGain).toLocaleString()}`} />
-        <ResultStat label="Annual revenue gain" value={`$${Math.round(recovered.annualGain).toLocaleString()}`} />
-        <ResultStat label="Estimated annual fee" value={`$${Math.round(recovered.annualFee).toLocaleString()}`} sub="You only pay on collected revenue" />
-        <div className="rounded-2xl border-2 border-success-500/30 bg-success-500/10 p-5">
-          <div className="text-xs font-medium uppercase tracking-wider text-success-600">Net annual benefit</div>
-          <div className="mt-1 font-display text-3xl font-bold text-success-600">
-            ${Math.round(recovered.net).toLocaleString()}
+        <ResultStat label="Additional monthly collections" value={`$${Math.round(recovered.additionalMonthlyCollections).toLocaleString()}`} />
+        <ResultStat label="Annual additional collections" value={`$${Math.round(recovered.annualAdditional).toLocaleString()}`} />
+        <ResultStat label="Estimated annual fee" value={`$${Math.round(recovered.annualFee).toLocaleString()}`} sub="Fee estimate; confirm pricing after assessment." />
+        <div className={`rounded-2xl border-2 p-5 ${recovered.netMonthly >= 0 ? 'border-success-500/30 bg-success-500/10' : 'border-amber-500/30 bg-amber-500/10'}`}>
+          <div className={`text-xs font-medium uppercase tracking-wider ${recovered.netMonthly >= 0 ? 'text-success-700' : 'text-amber-700'}`}>Net monthly benefit</div>
+          <div className={`mt-1 font-display text-3xl font-bold ${recovered.netMonthly >= 0 ? 'text-success-700' : 'text-amber-700'}`}>
+            ${Math.round(recovered.netMonthly).toLocaleString()}
           </div>
+          <div className="mt-2 text-xs text-navy-700/70">Annual net benefit: ${Math.round(recovered.annualNet).toLocaleString()}</div>
         </div>
       </div>
     </div>
