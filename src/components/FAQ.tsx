@@ -10,11 +10,11 @@ const FAQS = [
   },
   {
     q: 'How is your pricing structured?',
-    a: 'Our pricing is a transparent percentage of net collections, so we only succeed when you get paid. There are no hidden fees or surprise line items. After your free consultation we provide a written quote based on your specialty, volume, and current workflow.',
+    a: 'Pricing is a percentage of collections, quoted after a free assessment. TODO_CONFIRM: confirm this pricing model before publishing.',
   },
   {
     q: 'Are you HIPAA compliant?',
-    a: 'Yes. Every process, system, and team member operates under strict HIPAA safeguards. We use encrypted, access-controlled platforms, maintain Business Associate Agreements, and conduct regular compliance reviews.',
+    a: 'We sign a BAA with every client and follow HIPAA privacy and security safeguards. TODO_CONFIRM: verify operational practices before publishing.',
   },
   {
     q: 'What does the transition from our current billing look like?',
@@ -42,6 +42,7 @@ function FaqItem({ faq, isOpen, onToggle }: { faq: { q: string; a: string }; isO
         onClick={onToggle}
         className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
         aria-expanded={isOpen}
+        aria-controls={`faq-answer-${faq.q.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
       >
         <span className="font-display text-base font-semibold text-navy-900 sm:text-lg">{faq.q}</span>
         <span
@@ -55,6 +56,8 @@ function FaqItem({ faq, isOpen, onToggle }: { faq: { q: string; a: string }; isO
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
+            id={`faq-answer-${faq.q.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+            role="region"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
