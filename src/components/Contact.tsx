@@ -11,7 +11,6 @@ import {
   Clock,
 } from 'lucide-react';
 import { Reveal, SectionHeading } from './ui';
-import { submitConsultationRequest } from '../lib/supabase';
 
 const SPECIALTIES = [
   'Primary Care',
@@ -64,13 +63,23 @@ export default function Contact() {
       return;
     }
 
-    const res = await submitConsultationRequest(payload);
-    if (res.success) {
+    try {
+      const formData = new FormData(form);
+      formData.set('form-name', 'contact');
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData as unknown as Record<string, string>).toString(),
+      });
+
+      if (!response.ok) throw new Error('Form submission failed');
+
       setStatus('success');
       form.reset();
-    } else {
+    } catch (error) {
+      console.error('Contact form submission failed:', error);
       setStatus('error');
-      setErrorMsg(res.error || 'Something went wrong. Please try again.');
+      setErrorMsg('We could not submit your request right now. Please try again.');
     }
   };
 
@@ -180,7 +189,9 @@ export default function Contact() {
                   </button>
                 </motion.div>
               ) : (
-                <form onSubmit={onSubmit} className="space-y-5">
+                <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onSubmit={onSubmit} className="space-y-5">
+                  <input type="hidden" name="form-name" value="contact" />
+                  <input type="hidden" name="bot-field" />
                   <div className="grid gap-5 sm:grid-cols-2">
                     <label className="block">
                       <span className="text-sm font-medium text-navy-700/80">Full Name *</span>
