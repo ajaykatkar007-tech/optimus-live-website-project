@@ -12,19 +12,15 @@ import {
   MapPin,
 } from 'lucide-react';
 import { Button } from './ui';
-import { PERFORMANCE_METRICS } from '../lib/siteConfig';
 
 const TRUST_BADGES = [
-  { icon: ShieldCheck, label: 'HIPAA Compliant' },
-  { icon: Users, label: 'Experienced RCM Team' },
-  { icon: Zap, label: 'Faster Payments' },
-  { icon: UserCog, label: 'Dedicated Account Manager' },
+  { icon: ShieldCheck, label: 'Dedicated account manager · BAA with every client · Monthly KPI reporting' },
 ];
 
 const KPI_CARDS = [
-  { icon: FileCheck2, value: `${PERFORMANCE_METRICS.cleanClaimRate}%`, label: 'Clean Claims', accent: 'from-brand-500 to-brand-700' },
-  { icon: Zap, value: 'Faster', label: 'Insurance Payments', accent: 'from-accent-500 to-brand-600' },
-  { icon: Clock, value: 'Reduced', label: 'AR Days', accent: 'from-success-500 to-brand-600' },
+  { icon: FileCheck2, value: '99%', label: 'Clean Claims', accent: 'from-brand-500 to-brand-700' },
+  { icon: Zap, value: `${PERFORMANCE_METRICS.fasterCollections}%`, label: 'Faster Collections', accent: 'from-accent-500 to-brand-600' },
+  { icon: Clock, value: `${PERFORMANCE_METRICS.arDaysReduction}%`, label: 'AR Days Reduction', accent: 'from-success-500 to-brand-600' },
   { icon: BarChart3, value: 'Transparent', label: 'Reporting', accent: 'from-navy-700 to-brand-600' },
 ];
 
@@ -68,8 +64,7 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.15 }}
               className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-navy-100/80 sm:text-lg lg:mx-0"
             >
-              Helping medical practices improve cash flow with accurate medical
-              billing, faster reimbursements, and proactive Revenue Cycle Management.
+              Medical billing, coding, and AR follow-up for independent practices and specialty clinics, with a dedicated account manager and a free RCM assessment.
             </motion.p>
 
             <motion.div
@@ -89,10 +84,7 @@ export default function Hero() {
               className="mt-8 flex flex-col items-center gap-3 sm:flex-row lg:items-start lg:justify-start"
             >
               <Button variant="primary" size="lg" href="#contact" icon={<ArrowRight className="h-5 w-5" />}>
-                Book Free Consultation
-              </Button>
-              <Button variant="light" size="lg" href="#assessment">
-                Get a Free RCM Assessment
+                Free RCM Assessment
               </Button>
             </motion.div>
 
@@ -137,17 +129,7 @@ export default function Hero() {
               ))}
             </div>
 
-            {/* floating mini stat */}
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute -bottom-6 left-1/2 -translate-x-1/2 rounded-2xl border border-white/15 bg-white/10 px-5 py-3 backdrop-blur-md"
-            >
-              <div className="flex items-center gap-2 text-sm font-medium text-white">
-                <TrendingUp className="h-4 w-4 text-success-400" />
-                35% faster collections on average
-              </div>
-            </motion.div>
+
           </motion.div>
         </div>
       </div>
