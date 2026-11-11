@@ -9,7 +9,6 @@ import {
   Info,
 } from 'lucide-react';
 import { Reveal, SectionHeading, Button } from './ui';
-import { OPTIMUS_FEE_PCT } from '../lib/siteConfig';
 
 type Tab = 'roi' | 'revenue' | 'denial' | 'ar';
 
@@ -76,7 +75,7 @@ function RoiCalc() {
   const [monthly, setMonthly] = useState(120000);
   const [currentRate, setCurrentRate] = useState(92);
   const [optimusRate, setOptimusRate] = useState(98);
-  const [fee, setFee] = useState(OPTIMUS_FEE_PCT);
+  const [fee, setFee] = useState(0);
   const [currentBillingCost, setCurrentBillingCost] = useState(0);
 
   const recovered = useMemo(() => {
@@ -103,14 +102,14 @@ function RoiCalc() {
         <Field label="Current collection rate" value={currentRate} onChange={setCurrentRate} suffix="%" step={0.5} max={100} />
         <Field label="Expected Optimus collection rate" value={optimusRate} onChange={setOptimusRate} suffix="%" step={0.5} max={100} />
         <Field label="Current monthly billing cost (staff/vendor)" value={currentBillingCost} onChange={setCurrentBillingCost} prefix="$" step={100} />
-        <Field label="Optimus fee (% of collections)" value={fee} onChange={setFee} suffix="%" step={0.5} max={100} />
+        <Field label="Proposed Optimus fee (% of collections)" value={fee} onChange={setFee} suffix="%" step={0.5} max={100} />
         {invalidRateOrder && <p role="alert" className="text-sm text-amber-700">Expected collection rate should be equal to or higher than the current rate for this comparison.</p>}
         <p className="text-xs text-navy-700/70">Estimate only. Not a guarantee of results. Actual pricing is provided after assessment.</p>
       </div>
       <div className="space-y-3">
         <ResultStat label="Additional monthly collections" value={`$${Math.round(recovered.additionalMonthlyCollections).toLocaleString()}`} />
         <ResultStat label="Annual additional collections" value={`$${Math.round(recovered.annualAdditional).toLocaleString()}`} />
-        <ResultStat label="Estimated annual fee" value={`$${Math.round(recovered.annualFee).toLocaleString()}`} sub="Fee estimate; confirm pricing after assessment." />
+        <ResultStat label="Estimated annual fee" value={`$${Math.round(recovered.annualFee).toLocaleString()}`} sub="Enter a proposed fee to model pricing; this is not a published Optimus rate." />
         <div className={`rounded-2xl border-2 p-5 ${recovered.netMonthly >= 0 ? 'border-success-500/30 bg-success-500/10' : 'border-amber-500/30 bg-amber-500/10'}`}>
           <div className={`text-xs font-medium uppercase tracking-wider ${recovered.netMonthly >= 0 ? 'text-success-700' : 'text-amber-700'}`}>Net monthly benefit</div>
           <div className={`mt-1 font-display text-3xl font-bold ${recovered.netMonthly >= 0 ? 'text-success-700' : 'text-amber-700'}`}>
@@ -139,11 +138,11 @@ function RevenueLossCalc() {
       <div className="space-y-3">
         <ResultStat label="Annual revenue lost" value={`$${Math.round(lost).toLocaleString()}`} sub="From under-coding, missed charges, uncollected balances" />
         <div className="rounded-2xl border-2 border-success-500/30 bg-success-500/10 p-5">
-          <div className="text-xs font-medium uppercase tracking-wider text-success-600">Recoverable with Optimus</div>
+          <div className="text-xs font-medium uppercase tracking-wider text-success-600">Illustrative recovery scenario (70%)</div>
           <div className="mt-1 font-display text-3xl font-bold text-success-600">
             ${Math.round(recovered).toLocaleString()}
           </div>
-          <div className="mt-1 text-xs text-navy-700/60">Estimated based on typical client outcomes</div>
+          <div className="mt-1 text-xs text-navy-700/60">Illustrative scenario only; actual recovery depends on claim details and payer response.</div>
         </div>
       </div>
     </div>
@@ -170,7 +169,7 @@ function DenialCalc() {
         <ResultStat label="Denied claims / month" value={Math.round(denied).toLocaleString()} />
         <ResultStat label="Denied value / month" value={`$${Math.round(deniedValue).toLocaleString()}`} />
         <div className="rounded-2xl border-2 border-success-500/30 bg-success-500/10 p-5">
-          <div className="text-xs font-medium uppercase tracking-wider text-success-600">Recoverable via denial mgmt</div>
+          <div className="text-xs font-medium uppercase tracking-wider text-success-600">Illustrative recovery scenario (65%)</div>
           <div className="mt-1 font-display text-3xl font-bold text-success-600">
             ${Math.round(recoverable).toLocaleString()}/mo
           </div>
