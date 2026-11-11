@@ -1,10 +1,9 @@
 import {
   FileText,
-  Code2,
   RefreshCw,
   ShieldX,
   BadgeCheck,
-  KeyRound,
+  Receipt,
   Wallet,
   ClipboardCheck,
   UserCheck,
@@ -16,11 +15,11 @@ import { Reveal, SectionHeading } from './ui';
 
 const SERVICES = [
   { icon: FileText, title: 'Medical Billing', desc: 'End-to-end claim preparation and submission built for clean, first-pass acceptance.' },
-  { icon: Code2, title: 'Medical Coding', desc: 'Accurate, specialty-specific coding that maximizes reimbursement and minimizes denials.' },
+  { icon: FileText, title: 'Medical Coding', desc: 'Accurate, specialty-specific coding that maximizes reimbursement and minimizes denials.' },
   { icon: RefreshCw, title: 'AR Follow-Up', desc: 'Persistent, prioritized follow-up on aging accounts to recover every collectible dollar.' },
   { icon: ShieldX, title: 'Denial Management', desc: 'Root-cause analysis and rapid appeal workflows that turn denials into paid claims.' },
   { icon: BadgeCheck, title: 'Insurance Eligibility', desc: 'Real-time verification of benefits and coverage before the patient ever arrives.' },
-  { icon: KeyRound, title: 'Charge Entry', desc: 'Fast, accurate charge capture that keeps your revenue cycle moving without delays.' },
+  { icon: Receipt, title: 'Charge Entry', desc: 'Fast, accurate charge capture that keeps your revenue cycle moving without delays.' },
   { icon: Wallet, title: 'Payment Posting', desc: 'Automated and manual posting reconciled to the penny for clean, audit-ready books.' },
   { icon: ClipboardCheck, title: 'Prior Authorization', desc: 'Proactive auth management that prevents denials and protects scheduled care.' },
   { icon: UserCheck, title: 'Credentialing', desc: 'Complete provider credentialing that keeps you enrolled and billable with every payer.' },

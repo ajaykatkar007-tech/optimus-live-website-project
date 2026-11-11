@@ -15,8 +15,7 @@ import {
 import { Reveal, SectionHeading } from './ui';
 
 const STEPS = [
-  { icon: UserPlus, title: 'Patient Registration', desc: 'Accurate capture of demographics and insurance details at the front end.' },
-  { icon: BadgeCheck, title: 'Insurance Verification', desc: 'Real-time eligibility and benefits verification before service is rendered.' },
+  { icon: BadgeCheck, title: 'Insurance Verification & Eligibility', desc: 'Verify coverage, benefits, and payer requirements before services are rendered.' },
   { icon: Code2, title: 'Medical Coding', desc: 'Specialty-specific coding aligned to current CPT, ICD-10, and HCPCS guidelines.' },
   { icon: KeyRound, title: 'Charge Entry', desc: 'Prompt, precise charge capture to keep the cycle moving without lag.' },
   { icon: Send, title: 'Claim Submission', desc: 'Clean claims submitted electronically with edits that catch errors pre-submission.' },
@@ -44,7 +43,7 @@ export default function Process() {
                 <span className="text-gradient-light">A transparent, end-to-end</span> RCM workflow
               </>
             }
-            subtitle="Nine connected stages, each owned by specialists who keep your revenue moving from registration to final reporting."
+            subtitle="Eight connected stages, from eligibility verification through performance reporting."
           />
         </Reveal>
 

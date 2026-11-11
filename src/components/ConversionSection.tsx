@@ -14,22 +14,8 @@ const CTA_CARDS = [
   {
     icon: ClipboardCheck,
     title: 'Free RCM Assessment',
-    desc: 'A specialist reviews your denial rate, AR aging, and coding accuracy — then shows you exactly where revenue is leaking.',
-    cta: 'Start Assessment',
-    href: '#assessment',
-  },
-  {
-    icon: CalendarDays,
-    title: 'Schedule a Demo',
-    desc: 'See the Optimus workflow live. We walk through your specialty, EHR, and payer mix with a real RCM expert.',
-    cta: 'Book a Demo',
-    href: '#contact',
-  },
-  {
-    icon: FileDown,
-    title: 'Download Company Profile',
-    desc: 'Get our one-page capability overview: services, specialties, security, and the results we deliver.',
-    cta: 'Download PDF',
+    desc: 'A review of your denial rate, AR aging, and billing workflow to identify opportunities for improvement.',
+    cta: 'Free RCM Assessment',
     href: '#contact',
   },
 ];
@@ -38,7 +24,7 @@ export default function ConversionSection() {
   return (
     <section className="relative py-20 md:py-28">
       <div className="container-px">
-        <div className="grid gap-5 lg:grid-cols-3">
+        <div className="grid gap-5 lg:grid-cols-1">
           {CTA_CARDS.map((c, i) => (
             <Reveal key={c.title} delay={i * 0.08}>
               <motion.div
@@ -77,15 +63,7 @@ export default function ConversionSection() {
                 </p>
               </div>
               <div className="mt-7 space-y-2">
-                {[
-                  '5 denial reasons costing practices the most in 2026',
-                  'How to read an AR aging report like a pro',
-                  'Prior auth changes every specialty should prepare for',
-                ].map((t) => (
-                  <a key={t} href="#contact" className="flex items-center gap-2 text-sm text-navy-100/80 transition hover:text-white">
-                    <CheckCircle2 className="h-4 w-4 text-brand-300" /> {t}
-                  </a>
-                ))}
+                <p className="text-sm text-navy-100/80">Articles are being prepared. Links will be added when published.</p>
               </div>
             </div>
           </Reveal>

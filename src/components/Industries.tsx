@@ -20,7 +20,6 @@ const INDUSTRIES = [
   { icon: HeartPulse, label: 'Family Medicine' },
   { icon: Activity, label: 'Internal Medicine' },
   { icon: Brain, label: 'Behavioral Health' },
-  { icon: Heart, label: 'Mental Health' },
   { icon: Baby, label: 'Pediatrics' },
   { icon: Dumbbell, label: 'Physical Therapy' },
   { icon: Bone, label: 'Orthopedics' },
@@ -43,7 +42,7 @@ export default function Industries() {
                 <span className="text-gradient">every kind of practice</span>
               </>
             }
-            subtitle="From independent physicians and specialty clinics to behavioral health, urgent care, dental, and home health — we understand the payer mix, coding nuances, and compliance demands of each specialty we serve, for practices of every size across the US."
+            subtitle="We tailor billing and coding workflows to your specialty, payer mix, and EHR."
           />
         </Reveal>
 
@@ -66,8 +65,7 @@ export default function Industries() {
         <Reveal delay={0.1}>
           <div className="mt-12 flex items-center justify-center gap-3 rounded-2xl border border-navy-100 bg-navy-50/50 px-6 py-4 text-center text-sm text-navy-700/70">
             <Building2 className="h-5 w-5 shrink-0 text-brand-600" />
-            From independent physicians and specialty clinics to behavioral health, urgent care, dental, home health, and growing healthcare organizations — we serve practices of every size across the United States.
-            <a href="#contact" className="font-semibold text-brand-600 hover:text-brand-700">Talk to us →</a>
+            Independent practice workflows built around your operational needs.
           </div>
         </Reveal>
       </div>
