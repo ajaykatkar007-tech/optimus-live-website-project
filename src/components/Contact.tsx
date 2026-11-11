@@ -18,7 +18,6 @@ const SPECIALTIES = [
   'Family Medicine',
   'Internal Medicine',
   'Behavioral Health',
-  'Mental Health',
   'Pediatrics',
   'Physical Therapy',
   'Orthopedics',
@@ -54,7 +53,7 @@ export default function Contact() {
       email: String(fd.get('email') || '').trim(),
       phone: String(fd.get('phone') || '').trim(),
       specialty: String(fd.get('specialty') || '').trim(),
-      message: String(fd.get('message') || '').trim(),
+      message: [String(fd.get('message') || '').trim(), `Number of providers: ${String(fd.get('provider_count') || 'Not provided')}`].filter(Boolean).join('\\n'),
       source: 'contact',
     };
 
@@ -68,7 +67,6 @@ export default function Contact() {
     if (res.success) {
       setStatus('success');
       form.reset();
-      window.location.href = 'https://calendly.com';
     } else {
       setStatus('error');
       setErrorMsg(res.error || 'Something went wrong. Please try again.');
@@ -87,7 +85,7 @@ export default function Contact() {
             eyebrow="Let's Talk"
             title={
               <>
-                <span className="text-gradient-light">Schedule your free consultation</span>
+                <span className="text-gradient-light">Request your free RCM assessment</span>
               </>
             }
             subtitle="Tell us about your practice. We'll review your revenue cycle and show you exactly where you can improve collections and reduce denials — no obligation."
@@ -146,10 +144,10 @@ export default function Contact() {
               <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
                 <div className="flex items-center gap-2 text-sm font-semibold text-white">
                   <ShieldCheck className="h-5 w-5 text-success-400" />
-                  HIPAA-secure submission
+                  Privacy notice
                 </div>
                 <p className="mt-2 text-xs text-navy-100/60">
-                  Your information is encrypted and handled under strict HIPAA safeguards. We never share your data.
+                  Your information is encrypted in transit. Please do not include patient information in this form.
                 </p>
               </div>
             </div>
@@ -225,6 +223,17 @@ export default function Contact() {
                   </div>
 
                   <label className="block">
+                    <span className="text-sm font-medium text-navy-700/80">Number of providers</span>
+                    <select name="provider_count" defaultValue="" className="mt-1.5 w-full rounded-2xl border border-navy-100 bg-white px-4 py-3 text-sm text-navy-900 shadow-premium outline-none transition focus:border-brand-400 focus:ring-2 focus:ring-brand-100">
+                      <option value="" disabled>Select provider count</option>
+                      <option value="1">1</option>
+                      <option value="2-5">2–5</option>
+                      <option value="6-10">6–10</option>
+                      <option value="11+">11+</option>
+                    </select>
+                  </label>
+
+                  <label className="block">
                     <span className="text-sm font-medium text-navy-700/80">Specialty</span>
                     <select
                       name="specialty"
@@ -267,7 +276,7 @@ export default function Contact() {
                       </>
                     ) : (
                       <>
-                        Schedule Your Free Consultation
+                        Request Your Free RCM Assessment
                         <Send className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                       </>
                     )}
