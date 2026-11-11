@@ -65,16 +65,8 @@ export default function Navbar() {
         </div>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <Button
-            variant={scrolled ? 'ghost' : 'light'}
-            size="md"
-            href="#contact"
-            className={scrolled ? '' : 'text-white'}
-          >
-            Get a Free Assessment
-          </Button>
-          <Button variant="primary" size="md" href="#contact" icon={<ArrowRight className="h-4 w-4" />}>
-            Book Free Consultation
+          <Button variant={scrolled ? 'ghost' : 'light'} size="md" href="#contact" className={scrolled ? '' : 'text-white'} icon={<ArrowRight className="h-4 w-4" />}>
+            Free RCM Assessment
           </Button>
         </div>
 
@@ -111,12 +103,9 @@ export default function Navbar() {
                   {l.label}
                 </a>
               ))}
-              <div className="mt-3 flex flex-col gap-2.5">
-                <Button variant="secondary" href="#contact" onClick={() => setOpen(false)}>
-                  Get a Free Assessment
-                </Button>
+              <div className="mt-3">
                 <Button variant="primary" href="#contact" onClick={() => setOpen(false)} icon={<ArrowRight className="h-4 w-4" />}>
-                  Book Free Consultation
+                  Free RCM Assessment
                 </Button>
               </div>
             </div>
