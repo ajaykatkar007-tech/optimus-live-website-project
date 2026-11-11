@@ -12,6 +12,7 @@ import {
   MapPin,
 } from 'lucide-react';
 import { Button } from './ui';
+import { PERFORMANCE_METRICS } from '../lib/siteConfig';
 
 const TRUST_BADGES = [
   { icon: ShieldCheck, label: 'HIPAA Compliant' },
@@ -21,7 +22,7 @@ const TRUST_BADGES = [
 ];
 
 const KPI_CARDS = [
-  { icon: FileCheck2, value: '99%', label: 'Clean Claims', accent: 'from-brand-500 to-brand-700' },
+  { icon: FileCheck2, value: `${PERFORMANCE_METRICS.cleanClaimRate}%`, label: 'Clean Claims', accent: 'from-brand-500 to-brand-700' },
   { icon: Zap, value: 'Faster', label: 'Insurance Payments', accent: 'from-accent-500 to-brand-600' },
   { icon: Clock, value: 'Reduced', label: 'AR Days', accent: 'from-success-500 to-brand-600' },
   { icon: BarChart3, value: 'Transparent', label: 'Reporting', accent: 'from-navy-700 to-brand-600' },

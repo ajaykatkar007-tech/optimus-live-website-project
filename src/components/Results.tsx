@@ -1,12 +1,13 @@
 import { motion } from 'framer-motion';
 import { FileCheck2, Zap, Clock, Smile, ArrowRight } from 'lucide-react';
 import { Reveal, SectionHeading, AnimatedCounter, Button } from './ui';
+import { PERFORMANCE_METRICS } from '../lib/siteConfig';
 
 const STATS = [
-  { icon: FileCheck2, value: 99, suffix: '%', label: 'Clean Claim Rate', accent: 'from-brand-500 to-brand-700' },
-  { icon: Zap, value: 35, suffix: '%', label: 'Faster Collections', accent: 'from-accent-500 to-brand-600' },
-  { icon: Clock, value: 40, suffix: '%', label: 'Reduction in AR Days', accent: 'from-success-500 to-brand-600' },
-  { icon: Smile, value: 98, suffix: '%', label: 'Client Satisfaction', accent: 'from-navy-700 to-brand-600' },
+  { icon: FileCheck2, value: PERFORMANCE_METRICS.cleanClaimRate, suffix: '%', label: 'Clean Claim Rate', accent: 'from-brand-500 to-brand-700' },
+  { icon: Zap, value: PERFORMANCE_METRICS.fasterCollections, suffix: '%', label: 'Faster Collections', accent: 'from-accent-500 to-brand-600' },
+  { icon: Clock, value: PERFORMANCE_METRICS.arDaysReduction, suffix: '%', label: 'Reduction in AR Days', accent: 'from-success-500 to-brand-600' },
+  ...(PERFORMANCE_METRICS.SHOW_SATISFACTION ? [{ icon: Smile, value: PERFORMANCE_METRICS.satisfaction, suffix: '%', label: 'Client Satisfaction', accent: 'from-navy-700 to-brand-600' }] : []),
 ];
 
 export default function Results() {
@@ -26,7 +27,7 @@ export default function Results() {
                 <span className="text-gradient-light">Measurable impact</span> on your revenue cycle
               </>
             }
-            subtitle="The metrics our clients see after partnering with Optimus. Your results may vary based on specialty, payer mix, and starting workflow."
+            subtitle="Our performance targets for client practices. Results vary by specialty, payer mix, and starting workflow."
           />
         </Reveal>
 
@@ -48,6 +49,7 @@ export default function Results() {
             </Reveal>
           ))}
         </div>
+        <p className="mt-4 text-center text-xs text-navy-100/60">{PERFORMANCE_METRICS.evidenceNote}</p>
 
         <Reveal delay={0.15}>
           <div className="mt-12 text-center">

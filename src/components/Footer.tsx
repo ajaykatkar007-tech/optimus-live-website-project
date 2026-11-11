@@ -1,4 +1,5 @@
 import { ShieldCheck, Mail, ArrowUpRight } from 'lucide-react';
+import { CREDIBILITY_FLAGS } from '../lib/siteConfig';
 
 const QUICK_LINKS = [
   { label: 'Services', href: '#services' },
@@ -120,7 +121,7 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-2 text-xs text-navy-100/50">
             <ShieldCheck className="h-4 w-4 text-success-400" />
-            HIPAA Compliant · SOC 2 Aligned · US-Based RCM Team
+            HIPAA-compliant processes · BAA provided{CREDIBILITY_FLAGS.SHOW_SOC2 ? ' · SOC 2 Aligned' : ''}{CREDIBILITY_FLAGS.SHOW_US_BASED ? ' · US-Based RCM Team' : ''}
           </div>
         </div>
       </div>
