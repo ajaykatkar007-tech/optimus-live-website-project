@@ -42,7 +42,7 @@ export default function Industries() {
                 <span className="text-gradient">every kind of practice</span>
               </>
             }
-            subtitle="From independent physicians and specialty clinics to behavioral health, urgent care, dental, and home health — We tailor billing and coding workflows to your specialty, payer mix, and EHR."
+            subtitle="We tailor billing and coding workflows to your specialty, payer mix, and EHR."
           />
         </Reveal>
 

@@ -12,13 +12,14 @@ import {
   MapPin,
 } from 'lucide-react';
 import { Button } from './ui';
+import { PERFORMANCE_METRICS } from '../lib/siteConfig';
 
 const TRUST_BADGES = [
   { icon: ShieldCheck, label: 'Dedicated account manager · BAA with every client · Monthly KPI reporting' },
 ];
 
 const KPI_CARDS = [
-  { icon: FileCheck2, value: '99%', label: 'Clean Claims', accent: 'from-brand-500 to-brand-700' },
+  { icon: FileCheck2, value: `${PERFORMANCE_METRICS.cleanClaimRate}%`, label: 'Clean Claims', accent: 'from-brand-500 to-brand-700' },
   { icon: Zap, value: `${PERFORMANCE_METRICS.fasterCollections}%`, label: 'Faster Collections', accent: 'from-accent-500 to-brand-600' },
   { icon: Clock, value: `${PERFORMANCE_METRICS.arDaysReduction}%`, label: 'AR Days Reduction', accent: 'from-success-500 to-brand-600' },
   { icon: BarChart3, value: 'Transparent', label: 'Reporting', accent: 'from-navy-700 to-brand-600' },
