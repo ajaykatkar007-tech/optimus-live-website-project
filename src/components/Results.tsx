@@ -54,7 +54,7 @@ export default function Results() {
         <Reveal delay={0.15}>
           <div className="mt-12 text-center">
             <Button variant="primary" size="lg" href="#assessment" icon={<ArrowRight className="h-5 w-5" />}>
-              Get Your Free Practice Health Check
+              Free RCM Assessment
             </Button>
           </div>
         </Reveal>

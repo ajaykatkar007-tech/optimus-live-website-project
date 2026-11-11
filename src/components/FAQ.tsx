@@ -92,7 +92,7 @@ export default function FAQ() {
               </p>
               <div className="mt-7">
                 <Button variant="primary" size="lg" href="#contact" icon={<ArrowRight className="h-5 w-5" />}>
-                  Book Free Consultation
+                  Free RCM Assessment
                 </Button>
               </div>
               <div className="mt-6 flex items-center gap-2 text-sm text-navy-700/60">

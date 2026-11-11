@@ -101,7 +101,7 @@ export default function Footer() {
                   href="#contact"
                   className="inline-flex items-center gap-1.5 rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-500"
                 >
-                  Book Consultation <ArrowUpRight className="h-4 w-4" />
+                  Free RCM Assessment <ArrowUpRight className="h-4 w-4" />
                 </a>
               </li>
             </ul>
