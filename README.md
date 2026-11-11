@@ -39,7 +39,7 @@ VITE_SUPABASE_ANON_KEY=<your-supabase-anon-key>
 
 ## Database
 
-The `consultation_requests` table stores leads from the contact form. The SQL migration is in `migrations/20260719134538_create_consultation_requests.sql`. Apply it via the Supabase MCP `apply_migration` tool (not the CLI).
+The `consultation_requests` table stores leads from the contact form. Apply `migrations/20260719134538_create_consultation_requests.sql` for a new database, then apply `migrations/20261112000000_harden_consultation_requests.sql` to harden an existing database. Keep the `migrations/` and `supabase/migrations/` copies synchronized when applying migrations.
 
 ### RLS Policies
 
