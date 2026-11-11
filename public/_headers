@@ -1,0 +1,10 @@
+/*
+  Netlify security headers for the static Vite site.
+  Keep Supabase and Google Fonts allowed because the site uses both.
+*/
+ /*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
