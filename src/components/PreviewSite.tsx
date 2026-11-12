@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from 'react';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
 import {
   ArrowRight,
   BarChart3,
@@ -6,6 +6,11 @@ import {
   ClipboardCheck,
   FileCheck2,
   LineChart,
+  MessageCircle,
+  Maximize2,
+  Paperclip,
+  Send,
+  X,
   ShieldCheck,
   Stethoscope,
   WalletCards,
@@ -82,6 +87,27 @@ function Header() {
     </header>
   );
 }
+function AssistantWidget() {
+  const [open, setOpen] = useState(false);
+  const [input, setInput] = useState('');
+  const [sent, setSent] = useState('');
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const value = input.trim();
+    if (!value) return;
+    setSent(value);
+    setInput('');
+  };
+  return <div className="fixed bottom-5 right-5 z-[60] sm:bottom-7 sm:right-7">
+    {open && <div className="mb-3 flex h-[min(670px,calc(100vh-6rem))] w-[min(390px,calc(100vw-2rem))] flex-col overflow-hidden rounded-t-2xl border border-navy-100 bg-white shadow-premium-lg">
+      <div className="flex shrink-0 items-center justify-between bg-[#22a7ba] px-4 py-3 text-white"><div className="flex items-center gap-3"><span className="relative grid h-9 w-9 place-items-center rounded-full bg-white text-[#22a7ba]"><MessageCircle size={19} /><span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-[#22a7ba] bg-emerald-400"></span></span><p className="font-bold">Optimus RCM</p></div><div className="flex items-center gap-1"><button type="button" aria-label="Expand assistant" className="rounded p-2 hover:bg-white/10"><Maximize2 size={17} /></button><button type="button" aria-label="Close assistant" onClick={() => setOpen(false)} className="rounded p-2 hover:bg-white/10"><X size={20} /></button></div></div>
+      <div className="flex-1 space-y-2 overflow-y-auto bg-white px-4 py-5 sm:px-5"><div className="flex items-start gap-3"><span className="mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-full border border-brand-200 bg-white text-brand-600"><MessageCircle size={14} /></span><div className="space-y-2 text-sm leading-relaxed text-navy-900"><div className="rounded-2xl rounded-tl-md bg-[#f3f2f1] px-4 py-3">Hi there 👋 I'm the <span className="font-semibold">Optimus RCM</span> virtual assistant. What brings you here today?</div><div className="rounded-2xl bg-[#f3f2f1] px-4 py-3">We help independent practices strengthen revenue operations through practical billing, denial, AR, and payment-posting support. <a href="/solutions" className="font-medium text-brand-700 underline">Learn More</a></div><div className="rounded-2xl bg-[#f3f2f1] px-4 py-3">👨‍⚕️ I'm a Practice Owner → Explore our practice support: <a href="/specialties" className="font-medium text-brand-700 underline">Click Here</a></div><div className="rounded-2xl bg-[#f3f2f1] px-4 py-3">🧾 I'm looking for RCM support → See our capabilities: <a href="/capabilities" className="font-medium text-brand-700 underline">View Services</a></div><div className="rounded-2xl bg-[#f3f2f1] px-4 py-3">📞 Contact Optimus → Reach us here: <a href="mailto:ajay@optimusrcm.com" className="font-medium text-brand-700 underline">ajay@optimusrcm.com</a></div>{sent && <div className="rounded-2xl bg-brand-50 px-4 py-3">{sent}</div>}</div></div></div>
+      <form onSubmit={submit} className="flex shrink-0 items-center gap-2 border-t border-navy-100 bg-white px-3 py-3"><input aria-label="Ask the Optimus assistant" value={input} onChange={(event: ChangeEvent<HTMLInputElement>) => setInput(event.target.value)} placeholder="Ask me anything..." className="min-w-0 flex-1 rounded-full border border-navy-500 px-4 py-2.5 text-sm outline-none focus:border-brand-500" /><button type="button" aria-label="Attach a file" className="grid h-9 w-9 shrink-0 place-items-center text-navy-400 hover:text-brand-600"><Paperclip size={18} /></button><button type="submit" aria-label="Send message" className="grid h-9 w-9 shrink-0 place-items-center text-navy-500 hover:text-brand-600"><Send size={18} /></button></form>
+    </div>}
+    <button type="button" aria-label={open ? 'Close Optimus RCM assistant' : 'Open Optimus RCM assistant'} onClick={() => setOpen(!open)} className="ml-auto grid h-14 w-14 place-items-center rounded-full bg-[#22a7ba] text-white shadow-premium-lg transition hover:scale-105 hover:bg-[#168ea1]">{open ? <X size={22} /> : <MessageCircle size={23} />}</button>
+  </div>;
+}
+
 function Footer() {
   return (
     <footer className="bg-navy-950 py-12 text-white">
@@ -167,5 +193,5 @@ function CompanyPage() {
 export default function PreviewSite() {
   const path = window.location.pathname.replace(/\/$/, '') || '/';
   const page = path === '/solutions' ? <SolutionsPage /> : path === '/capabilities' ? <CapabilitiesPage /> : path === '/specialties' ? <SpecialtiesPage /> : path === '/resources' ? <ResourcesPage /> : path === '/revenue-calculator' ? <RevenueCalculatorPage /> : path === '/company' ? <CompanyPage /> : path === '/contact' ? <Contact /> : <HomePage />;
-  return <div className="min-h-screen bg-white"><Header /><main>{page}</main><Footer /></div>;
+  return <div className="min-h-screen bg-white"><Header /><main>{page}</main><AssistantWidget /><Footer /></div>;
 }
