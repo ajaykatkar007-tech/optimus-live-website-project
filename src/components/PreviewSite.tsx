@@ -7,6 +7,8 @@ import {
   FileCheck2,
   LineChart,
   MessageCircle,
+  Maximize2,
+  Paperclip,
   Send,
   X,
   ShieldCheck,
@@ -88,31 +90,21 @@ function Header() {
 function AssistantWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([
-    { role: 'assistant', text: "Hi there 👋 I am the Optimus RCM virtual assistant. What brings you here today?" },
-    { role: 'assistant', text: 'We help independent practices organize billing, denials, AR, payment posting, and revenue-cycle workflows.' },
-  ]);
-  const sendMessage = (event: FormEvent<HTMLFormElement>) => {
+  const [sent, setSent] = useState('');
+  const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const value = input.trim();
     if (!value) return;
-    const lower = value.toLowerCase();
-    const reply = lower.includes('price') || lower.includes('cost') || lower.includes('quote')
-      ? 'We can understand your practice and recommend a support scope before discussing pricing. Use the contact form to start.'
-      : lower.includes('denial') || lower.includes('billing') || lower.includes('ar')
-        ? 'We can help review billing, denial, AR, and payment-posting workflows. Tell us what your practice needs most.'
-        : 'Thanks for reaching out. The Optimus team can help you find the right revenue-cycle support for your practice.';
-    setMessages((current) => [...current, { role: 'user', text: value }, { role: 'assistant', text: reply }]);
+    setSent(value);
     setInput('');
   };
   return <div className="fixed bottom-5 right-5 z-[60] sm:bottom-7 sm:right-7">
-    {open && <div className="mb-3 w-[min(360px,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-navy-100 bg-white shadow-premium-lg">
-      <div className="flex items-center justify-between bg-brand-600 px-4 py-3 text-white"><div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-full bg-white text-brand-700"><MessageCircle size={18} /></span><div><p className="font-bold">Optimus RCM</p><p className="text-xs text-white/75">Virtual assistant</p></div></div><button type="button" aria-label="Close chat" onClick={() => setOpen(false)} className="rounded-full p-2 hover:bg-white/10"><X size={19} /></button></div>
-      <div className="max-h-80 space-y-3 overflow-y-auto bg-white p-4">{messages.map((message, index) => <div key={index} className={message.role === 'user' ? 'ml-8 rounded-2xl rounded-br-md bg-brand-50 px-3 py-2.5 text-sm text-navy-900' : 'mr-5 rounded-2xl rounded-bl-md bg-navy-50 px-3 py-2.5 text-sm leading-relaxed text-navy-800'}>{message.text}</div>)}<div className="flex flex-wrap gap-2"><button type="button" onClick={() => setInput('I need help with billing and denials')} className="rounded-full border border-brand-200 px-3 py-1.5 text-xs font-semibold text-brand-700 hover:bg-brand-50">Billing support</button><button type="button" onClick={() => setInput('I want to discuss pricing')} className="rounded-full border border-brand-200 px-3 py-1.5 text-xs font-semibold text-brand-700 hover:bg-brand-50">Discuss pricing</button></div></div>
-      <form onSubmit={sendMessage} className="flex items-center gap-2 border-t border-navy-100 p-3"><input aria-label="Message" value={input} onChange={(event: ChangeEvent<HTMLInputElement>) => setInput(event.target.value)} placeholder="Ask me anything..." className="min-w-0 flex-1 rounded-full border border-navy-200 px-4 py-2.5 text-sm outline-none focus:border-brand-500" /><button type="submit" aria-label="Send message" className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-600 text-white hover:bg-brand-700"><Send size={16} /></button></form>
-      <div className="border-t border-navy-100 px-4 py-3 text-center"><a href="/contact" className="text-xs font-semibold text-brand-700 hover:text-brand-800">Prefer a human? Contact Optimus →</a></div>
+    {open && <div className="mb-3 flex h-[min(670px,calc(100vh-6rem))] w-[min(390px,calc(100vw-2rem))] flex-col overflow-hidden rounded-t-2xl border border-navy-100 bg-white shadow-premium-lg">
+      <div className="flex shrink-0 items-center justify-between bg-[#22a7ba] px-4 py-3 text-white"><div className="flex items-center gap-3"><span className="relative grid h-9 w-9 place-items-center rounded-full bg-white text-[#22a7ba]"><MessageCircle size={19} /><span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-[#22a7ba] bg-emerald-400"></span></span><p className="font-bold">Optimus RCM</p></div><div className="flex items-center gap-1"><button type="button" aria-label="Expand assistant" className="rounded p-2 hover:bg-white/10"><Maximize2 size={17} /></button><button type="button" aria-label="Close assistant" onClick={() => setOpen(false)} className="rounded p-2 hover:bg-white/10"><X size={20} /></button></div></div>
+      <div className="flex-1 space-y-2 overflow-y-auto bg-white px-4 py-5 sm:px-5"><div className="flex items-start gap-3"><span className="mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-full border border-brand-200 bg-white text-brand-600"><MessageCircle size={14} /></span><div className="space-y-2 text-sm leading-relaxed text-navy-900"><div className="rounded-2xl rounded-tl-md bg-[#f3f2f1] px-4 py-3">Hi there 👋 I'm the <span className="font-semibold">Optimus RCM</span> virtual assistant. What brings you here today?</div><div className="rounded-2xl bg-[#f3f2f1] px-4 py-3">We help independent practices strengthen revenue operations through practical billing, denial, AR, and payment-posting support. <a href="/solutions" className="font-medium text-brand-700 underline">Learn More</a></div><div className="rounded-2xl bg-[#f3f2f1] px-4 py-3">👨‍⚕️ I'm a Practice Owner → Explore our practice support: <a href="/specialties" className="font-medium text-brand-700 underline">Click Here</a></div><div className="rounded-2xl bg-[#f3f2f1] px-4 py-3">🧾 I'm looking for RCM support → See our capabilities: <a href="/capabilities" className="font-medium text-brand-700 underline">View Services</a></div><div className="rounded-2xl bg-[#f3f2f1] px-4 py-3">📞 Contact Optimus → Reach us here: <a href="mailto:ajay@optimusrcm.com" className="font-medium text-brand-700 underline">ajay@optimusrcm.com</a></div>{sent && <div className="rounded-2xl bg-brand-50 px-4 py-3">{sent}</div>}</div></div></div>
+      <form onSubmit={submit} className="flex shrink-0 items-center gap-2 border-t border-navy-100 bg-white px-3 py-3"><input aria-label="Ask the Optimus assistant" value={input} onChange={(event: ChangeEvent<HTMLInputElement>) => setInput(event.target.value)} placeholder="Ask me anything..." className="min-w-0 flex-1 rounded-full border border-navy-500 px-4 py-2.5 text-sm outline-none focus:border-brand-500" /><button type="button" aria-label="Attach a file" className="grid h-9 w-9 shrink-0 place-items-center text-navy-400 hover:text-brand-600"><Paperclip size={18} /></button><button type="submit" aria-label="Send message" className="grid h-9 w-9 shrink-0 place-items-center text-navy-500 hover:text-brand-600"><Send size={18} /></button></form>
     </div>}
-    <button type="button" aria-label={open ? 'Close Optimus RCM assistant' : 'Open Optimus RCM assistant'} onClick={() => setOpen(!open)} className="ml-auto grid h-14 w-14 place-items-center rounded-full bg-brand-600 text-white shadow-premium-lg transition hover:scale-105 hover:bg-brand-700">{open ? <X size={22} /> : <MessageCircle size={23} />}</button>
+    <button type="button" aria-label={open ? 'Close Optimus RCM assistant' : 'Open Optimus RCM assistant'} onClick={() => setOpen(!open)} className="ml-auto grid h-14 w-14 place-items-center rounded-full bg-[#22a7ba] text-white shadow-premium-lg transition hover:scale-105 hover:bg-[#168ea1]">{open ? <X size={22} /> : <MessageCircle size={23} />}</button>
   </div>;
 }
 
