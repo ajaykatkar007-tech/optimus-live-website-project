@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import TriarqInspiredSections from './components/TriarqInspiredSections';
 import ProblemSection from './components/ProblemSection';
 import Services from './components/Services';
 import WhyChooseUs from './components/WhyChooseUs';
@@ -19,6 +20,7 @@ function App() {
       <Navbar />
       <main>
         <Hero />
+        <TriarqInspiredSections />
         <ProblemSection />
         <Services />
         <WhyChooseUs />
