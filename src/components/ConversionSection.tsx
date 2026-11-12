@@ -52,6 +52,7 @@ export default function ConversionSection() {
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-navy-700/70">{c.desc}</p>
                 <a
                   href={c.href}
+                  download={c.title === 'Download Company Profile' ? 'optimus-rcm-company-profile.pdf' : undefined}
                   className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 transition-colors hover:text-brand-700"
                 >
                   {c.cta}
