@@ -139,16 +139,7 @@ function RevenueCalculatorPage() {
   const denialOpportunity = annualCollections * Math.max(0, Number(denialRate) - 5) / 100;
   const arCash = Math.max(0, Number(collections) || 0) / 30 * (Number(arDays) || 0);
   const totalOpportunity = denialOpportunity + arCash;
-  const money = (value: number) => value > 0 ? '
-  return <><PageIntro eyebrow="Company" title="A practical partner for independent practice performance." text="Optimus RCM helps practices organize the work behind billing, collections, and revenue-cycle improvement with clear communication and an agreed scope." /><section className="py-20 md:py-28"><div className="container-px grid gap-10 md:grid-cols-3"><div><h2 className="text-xl font-bold text-navy-900">How we work</h2><p className="mt-3 text-sm leading-relaxed text-navy-700/70">Review the workflow, agree on priorities, and improve with transparent follow-up.</p></div><div><h2 className="text-xl font-bold text-navy-900">Security conversation</h2><p className="mt-3 text-sm leading-relaxed text-navy-700/70">We discuss workflow, access, agreements, and security requirements before onboarding.</p></div><div><h2 className="text-xl font-bold text-navy-900">Clear expectations</h2><p className="mt-3 text-sm leading-relaxed text-navy-700/70">Scope, pricing, responsibilities, and implementation details are confirmed in writing.</p></div></div></section></>;
-}
-
-export default function PreviewSite() {
-  const path = window.location.pathname.replace(/\/$/, '') || '/';
-  const page = path === '/solutions' ? <SolutionsPage /> : path === '/capabilities' ? <CapabilitiesPage /> : path === '/specialties' ? <SpecialtiesPage /> : path === '/resources' ? <ResourcesPage /> : path === '/revenue-calculator' ? <RevenueCalculatorPage /> : path === '/company' ? <CompanyPage /> : path === '/contact' ? <Contact /> : <HomePage />;
-  return <div className="min-h-screen bg-white"><Header /><main>{page}</main><Footer /></div>;
-}
- + Math.round(value).toLocaleString('en-US') : '$0';
+  const money = (value: number) => value > 0 ? '$' + Math.round(value).toLocaleString('en-US') : '$0';
   return <><PageIntro eyebrow="Revenue-cycle check" title="How much opportunity is sitting inside your revenue cycle?" text="Answer a few questions to see an illustrative snapshot for your practice. Use the result as a starting point for a conversation with the Optimus team." />
     <section className="bg-navy-50/60 py-16 md:py-24"><div className="container-px grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
       <div className="rounded-3xl border border-navy-100 bg-white p-7 shadow-premium md:p-9"><div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-600 font-bold text-white">1</span><div><h2 className="text-2xl font-bold text-navy-900">About your practice</h2><p className="text-sm text-navy-700/70">Tell us a little about the workflow you are managing.</p></div></div>
@@ -175,6 +166,6 @@ function CompanyPage() {
 
 export default function PreviewSite() {
   const path = window.location.pathname.replace(/\/$/, '') || '/';
-  const page = path === '/solutions' ? <SolutionsPage /> : path === '/capabilities' ? <CapabilitiesPage /> : path === '/specialties' ? <SpecialtiesPage /> : path === '/resources' ? <ResourcesPage /> : path === '/company' ? <CompanyPage /> : path === '/contact' ? <Contact /> : <HomePage />;
+  const page = path === '/solutions' ? <SolutionsPage /> : path === '/capabilities' ? <CapabilitiesPage /> : path === '/specialties' ? <SpecialtiesPage /> : path === '/resources' ? <ResourcesPage /> : path === '/revenue-calculator' ? <RevenueCalculatorPage /> : path === '/company' ? <CompanyPage /> : path === '/contact' ? <Contact /> : <HomePage />;
   return <div className="min-h-screen bg-white"><Header /><main>{page}</main><Footer /></div>;
 }
