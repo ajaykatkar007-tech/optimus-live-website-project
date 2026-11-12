@@ -34,23 +34,23 @@ const services = ['Medical Billing', 'Medical Coding', 'AR Follow-Up', 'Denial M
 
 function Header() {
   const menus = [
-    { label: 'Practices', href: '/specialties', columns: [
+    { label: 'Practices', href: '/specialties', image: '/optimus-practice-team.png', columns: [
       { title: 'Practice support', links: [['Overview', '/specialties'], ['Family Medicine', '/specialties'], ['Primary Care', '/specialties'], ['Multi-Specialty Practices', '/specialties']] },
       { title: 'Revenue workflow', links: [['Billing & Coding', '/solutions'], ['Denial Prevention', '/capabilities'], ['AR Follow-Up', '/solutions'], ['Payment Posting', '/solutions']] },
     ] },
-    { label: 'Solutions', href: '/solutions', columns: [
+    { label: 'Solutions', href: '/solutions', image: '/optimus-team-review.png', columns: [
       { title: 'Support models', links: [['Overview', '/solutions'], ['Assessment & Action Plan', '/solutions'], ['Focused RCM Support', '/solutions'], ['Full RCM Support', '/solutions']] },
       { title: 'Capabilities', links: [['Overview', '/capabilities'], ['Maximize Revenue', '/capabilities'], ['Denial Prevention', '/capabilities'], ['Reporting & Insights', '/capabilities']] },
       { title: 'Workflow', links: [['Eligibility & Authorization', '/solutions'], ['Claims & Billing', '/solutions'], ['AR & Payment Posting', '/solutions'], ['Specialty Support', '/specialties']] },
     ] },
-    { label: 'Who We Serve', href: '/specialties', columns: [
+    { label: 'Who We Serve', href: '/specialties', image: '/optimus-care-coordinator.png', columns: [
       { title: 'Specialties', links: [['Family Medicine', '/specialties'], ['Internal Medicine', '/specialties'], ['Behavioral Health', '/specialties'], ['Primary Care', '/specialties']] },
       { title: 'Practice types', links: [['Independent Practices', '/specialties'], ['Growing Groups', '/specialties'], ['Multi-Specialty Practices', '/specialties']] },
     ] },
-    { label: 'Company', href: '/company', columns: [
+    { label: 'Company', href: '/company', image: '/optimus-hero-practice.png', columns: [
       { title: 'About Optimus', links: [['Company Overview', '/company'], ['How We Work', '/company'], ['Security & Privacy', '/company']] },
     ] },
-    { label: 'Resources', href: '/resources', columns: [
+    { label: 'Resources', href: '/resources', image: '/optimus-resource-insights.png', columns: [
       { title: 'Learn', links: [['RCM Articles', '/resources'], ['Revenue Opportunity Calculator', '/revenue-calculator'], ['Revenue Cycle Tools', '/#tools'], ['Company Profile', '/#contact']] },
     ] },
   ];
@@ -67,7 +67,7 @@ function Header() {
               <a href={menu.href} className="inline-flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium text-navy-700 hover:bg-brand-50 hover:text-brand-700">{menu.label}<span className="text-xs text-brand-600">⌄</span></a>
               <div className="invisible absolute left-1/2 top-full z-50 w-[820px] -translate-x-1/2 rounded-b-2xl border border-navy-100 bg-white p-6 opacity-0 shadow-premium-lg transition-all duration-200 group-hover:visible group-hover:opacity-100">
                 <div className="grid grid-cols-[220px_1fr] gap-7">
-                  <a href={menu.href} className="overflow-hidden rounded-2xl bg-navy-950 text-white hover:bg-navy-900"><img src="/optimus-practice-team.png" alt="Optimus RCM team supporting an independent practice" className="h-24 w-full object-cover opacity-90" /><div className="p-5"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-200">Optimus RCM</p><h3 className="mt-2 text-xl font-bold">{menu.label}</h3><p className="mt-2 text-sm leading-relaxed text-navy-100/70">Explore the support and resources available for independent practices.</p><span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-200">Learn more <ArrowRight size={15} /></span></div></a>
+                  <a href={menu.href} className="overflow-hidden rounded-2xl bg-navy-950 text-white hover:bg-navy-900"><img src={menu.image} alt={`${menu.label} at Optimus RCM`} className="h-24 w-full object-cover opacity-90" /><div className="p-5"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-200">Optimus RCM</p><h3 className="mt-2 text-xl font-bold">{menu.label}</h3><p className="mt-2 text-sm leading-relaxed text-navy-100/70">Explore the support and resources available for independent practices.</p><span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-200">Learn more <ArrowRight size={15} /></span></div></a>
                   <div className="grid gap-6 md:grid-cols-3">{menu.columns.map((column) => <div key={column.title}><p className="flex items-center gap-2 text-sm font-bold text-navy-900"><span className="text-brand-600">›</span>{column.title}</p><div className="mt-3 grid gap-2">{column.links.map(([label, href]) => <a key={label} href={href} className="text-sm text-navy-700 hover:text-brand-700">{label}</a>)}</div></div>)}</div>
                 </div>
               </div>
