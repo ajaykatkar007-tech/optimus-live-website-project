@@ -30,7 +30,7 @@ const CTA_CARDS = [
     title: 'Download Company Profile',
     desc: 'Get our one-page capability overview: services, specialties, security, and the results we deliver.',
     cta: 'Download PDF',
-    href: '#contact',
+    href: '/optimus-rcm-company-profile.pdf',
   },
 ];
 
