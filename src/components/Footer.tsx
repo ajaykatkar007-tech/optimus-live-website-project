@@ -19,9 +19,9 @@ const SERVICES = [
 ];
 
 const LEGAL = [
-  { label: 'Privacy Policy', href: '#' },
-  { label: 'HIPAA Statement', href: '#' },
-  { label: 'Terms of Service', href: '#' },
+  { label: 'Privacy Overview', href: '#privacy' },
+  { label: 'HIPAA & Security', href: '#hipaa' },
+  { label: 'Service Terms', href: '#terms' },
 ];
 
 export default function Footer() {
@@ -30,7 +30,6 @@ export default function Footer() {
       <div className="pointer-events-none absolute inset-0 bg-grid-navy [background-size:48px_48px] opacity-20" />
       <div className="container-px relative">
         <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
-          {/* Brand */}
           <div>
             <a href="#home" className="flex items-center gap-2.5">
               <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-navy-900 via-brand-600 to-accent-500 text-white shadow-glow">
@@ -66,7 +65,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick links */}
           <div>
             <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-white">Quick Links</h4>
             <ul className="mt-4 space-y-2.5">
@@ -78,7 +76,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Services */}
           <div>
             <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-white">Services</h4>
             <ul className="mt-4 space-y-2.5">
@@ -90,7 +87,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact + legal */}
           <div>
             <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-white">Contact</h4>
             <ul className="mt-4 space-y-2.5">
@@ -120,7 +116,7 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-2 text-xs text-navy-100/50">
             <ShieldCheck className="h-4 w-4 text-success-400" />
-            HIPAA Compliant · SOC 2 Aligned · US-Based RCM Team
+            HIPAA-aware workflows · Security discussed before onboarding · US-focused RCM support
           </div>
         </div>
       </div>
