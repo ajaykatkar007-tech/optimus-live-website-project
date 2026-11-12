@@ -6,7 +6,7 @@ import {
   FileText,
   Stethoscope,
 } from 'lucide-react';
-import Reveal from './ui';
+import { Reveal } from './ui';
 
 const packages = [
   {
