@@ -66,10 +66,15 @@ export default function Contact() {
     try {
       const formData = new FormData(form);
       formData.set('form-name', 'contact');
+      const encoded = new URLSearchParams();
+      formData.forEach((value, key) => {
+        encoded.append(key, typeof value === 'string' ? value : value.name);
+      });
+
       const response = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData as unknown as Record<string, string>).toString(),
+        body: encoded.toString(),
       });
 
       if (!response.ok) throw new Error('Form submission failed');
