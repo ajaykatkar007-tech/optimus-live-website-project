@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   ArrowRight,
   BarChart3,
@@ -50,7 +51,7 @@ function Header() {
       { title: 'About Optimus', links: [['Company Overview', '/company'], ['How We Work', '/company'], ['Security & Privacy', '/company']] },
     ] },
     { label: 'Resources', href: '/resources', columns: [
-      { title: 'Learn', links: [['RCM Articles', '/resources'], ['Revenue Cycle Tools', '/#tools'], ['Company Profile', '/#contact']] },
+      { title: 'Learn', links: [['RCM Articles', '/resources'], ['Revenue Opportunity Calculator', '/revenue-calculator'], ['Revenue Cycle Tools', '/#tools'], ['Company Profile', '/#contact']] },
     ] },
   ];
   return (
@@ -126,6 +127,46 @@ function SpecialtiesPage() {
 
 function ResourcesPage() {
   return <><PageIntro eyebrow="Resources" title="Practical RCM guidance for practice teams." text="Short articles and starting points to help reduce avoidable rework and make revenue-cycle priorities clearer." /><section className="py-20 md:py-28"><div className="container-px grid gap-6 lg:grid-cols-3">{articles.map(([title, text]) => <article key={title} className="rounded-3xl border border-navy-100 bg-white p-7 shadow-premium"><p className="text-sm font-semibold text-brand-700">RCM guide</p><h2 className="mt-4 text-xl font-bold text-navy-900">{title}</h2><p className="mt-3 leading-relaxed text-navy-700/70">{text}</p><a href="/contact" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-700">Discuss this topic <ArrowRight size={16} /></a></article>)}</div></section></>;
+}
+
+function RevenueCalculatorPage() {
+  const [specialty, setSpecialty] = useState('Family Medicine');
+  const [physicians, setPhysicians] = useState(5);
+  const [collections, setCollections] = useState(150000);
+  const [arDays, setArDays] = useState(45);
+  const [denialRate, setDenialRate] = useState(10);
+  const annualCollections = Math.max(0, Number(collections) || 0) * 12;
+  const denialOpportunity = annualCollections * Math.max(0, Number(denialRate) - 5) / 100;
+  const arCash = Math.max(0, Number(collections) || 0) / 30 * (Number(arDays) || 0);
+  const totalOpportunity = denialOpportunity + arCash;
+  const money = (value: number) => value > 0 ? '
+  return <><PageIntro eyebrow="Company" title="A practical partner for independent practice performance." text="Optimus RCM helps practices organize the work behind billing, collections, and revenue-cycle improvement with clear communication and an agreed scope." /><section className="py-20 md:py-28"><div className="container-px grid gap-10 md:grid-cols-3"><div><h2 className="text-xl font-bold text-navy-900">How we work</h2><p className="mt-3 text-sm leading-relaxed text-navy-700/70">Review the workflow, agree on priorities, and improve with transparent follow-up.</p></div><div><h2 className="text-xl font-bold text-navy-900">Security conversation</h2><p className="mt-3 text-sm leading-relaxed text-navy-700/70">We discuss workflow, access, agreements, and security requirements before onboarding.</p></div><div><h2 className="text-xl font-bold text-navy-900">Clear expectations</h2><p className="mt-3 text-sm leading-relaxed text-navy-700/70">Scope, pricing, responsibilities, and implementation details are confirmed in writing.</p></div></div></section></>;
+}
+
+export default function PreviewSite() {
+  const path = window.location.pathname.replace(/\/$/, '') || '/';
+  const page = path === '/solutions' ? <SolutionsPage /> : path === '/capabilities' ? <CapabilitiesPage /> : path === '/specialties' ? <SpecialtiesPage /> : path === '/resources' ? <ResourcesPage /> : path === '/revenue-calculator' ? <RevenueCalculatorPage /> : path === '/company' ? <CompanyPage /> : path === '/contact' ? <Contact /> : <HomePage />;
+  return <div className="min-h-screen bg-white"><Header /><main>{page}</main><Footer /></div>;
+}
+ + Math.round(value).toLocaleString('en-US') : '$0';
+  return <><PageIntro eyebrow="Revenue-cycle check" title="How much opportunity is sitting inside your revenue cycle?" text="Answer a few questions to see an illustrative snapshot for your practice. Use the result as a starting point for a conversation with the Optimus team." />
+    <section className="bg-navy-50/60 py-16 md:py-24"><div className="container-px grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="rounded-3xl border border-navy-100 bg-white p-7 shadow-premium md:p-9"><div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-600 font-bold text-white">1</span><div><h2 className="text-2xl font-bold text-navy-900">About your practice</h2><p className="text-sm text-navy-700/70">Tell us a little about the workflow you are managing.</p></div></div>
+        <div className="mt-8 grid gap-6 md:grid-cols-2">
+          <label className="text-sm font-semibold text-navy-900">Specialty<select value={specialty} onChange={e=>setSpecialty(e.target.value)} className="mt-2 w-full rounded-xl border border-navy-100 bg-white px-4 py-3 font-normal"><option>Family Medicine</option><option>Internal Medicine</option><option>Primary Care</option><option>Behavioral Health</option><option>Pediatrics</option><option>Orthopedics</option><option>Cardiology</option><option>Other specialty</option></select></label>
+          <label className="text-sm font-semibold text-navy-900">Physicians<input type="number" min="1" max="100" value={physicians} onChange={e=>setPhysicians(Number(e.target.value))} className="mt-2 w-full rounded-xl border border-navy-100 px-4 py-3 font-normal" /><span className="mt-2 block text-xs font-normal text-navy-700/60">Approximate number of providers</span></label>
+        </div>
+        <div className="mt-8 flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-600 font-bold text-white">2</span><div><h2 className="text-2xl font-bold text-navy-900">Your revenue cycle</h2><p className="text-sm text-navy-700/70">Rough numbers are fine. Your estimate updates as you type.</p></div></div>
+        <div className="mt-7 grid gap-6 md:grid-cols-2">
+          <label className="text-sm font-semibold text-navy-900">Monthly collections<input type="number" min="0" value={collections} onChange={e=>setCollections(Number(e.target.value))} className="mt-2 w-full rounded-xl border border-navy-100 px-4 py-3 font-normal" /><span className="mt-2 block text-xs font-normal text-navy-700/60">Payments received across payers</span></label>
+          <label className="text-sm font-semibold text-navy-900">Days in accounts receivable<input type="range" min="15" max="120" value={arDays} onChange={e=>setArDays(Number(e.target.value))} className="mt-5 w-full accent-brand-600" /><span className="mt-2 block text-sm font-normal text-navy-700/70">{arDays} days</span></label>
+          <label className="text-sm font-semibold text-navy-900 md:col-span-2">Initial claim denial rate<input type="range" min="0" max="30" value={denialRate} onChange={e=>setDenialRate(Number(e.target.value))} className="mt-5 w-full accent-brand-600" /><span className="mt-2 block text-sm font-normal text-navy-700/70">{denialRate}% (5% reference target)</span></label>
+        </div>
+      </div>
+      <aside className="h-fit rounded-3xl bg-navy-900 p-7 text-white shadow-premium-lg md:p-9"><p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-200">Your revenue snapshot</p><h2 className="mt-3 text-3xl font-bold">Illustrative opportunity</h2><p className="mt-3 text-sm leading-relaxed text-white/70">Based on {physicians || 0} providers in {specialty}. This is an estimate, not a guarantee.</p><div className="mt-8 divide-y divide-white/15 rounded-2xl border border-white/15"><div className="flex items-center justify-between p-4"><span className="text-sm text-white/70">Estimated annual collections</span><strong>{money(annualCollections)}</strong></div><div className="flex items-center justify-between p-4"><span className="text-sm text-white/70">Denial opportunity above 5%</span><strong>{money(denialOpportunity)}</strong></div><div className="flex items-center justify-between p-4"><span className="text-sm text-white/70">Cash currently in A/R</span><strong>{money(arCash)}</strong></div><div className="flex items-center justify-between p-4 text-brand-200"><span className="text-sm">Illustrative opportunity</span><strong className="text-xl">{money(totalOpportunity)}</strong></div></div><p className="mt-5 text-xs leading-relaxed text-white/55">Results vary by specialty, payer mix, staffing, and workflow. Optimus does not guarantee specific financial outcomes.</p></aside>
+    </div></section>
+    <section className="bg-white py-20 md:py-28"><div className="container-px"><div className="mx-auto max-w-3xl rounded-3xl border border-navy-100 bg-white p-8 text-center shadow-premium md:p-12"><p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-700">Next step</p><h2 className="mt-3 text-3xl font-bold text-navy-900 md:text-4xl">Want to understand what is driving the opportunity?</h2><p className="mx-auto mt-4 max-w-2xl leading-relaxed text-navy-700/70">Share your snapshot with our team and we can discuss practical priorities for your practice.</p><a href="/contact" className="mt-7 inline-flex items-center gap-2 rounded-full bg-brand-600 px-6 py-3 font-semibold text-white hover:bg-brand-700">Request a conversation <ArrowRight size={18} /></a></div></div></section>
+  </>;
 }
 
 function CompanyPage() {
