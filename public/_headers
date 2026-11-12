@@ -4,3 +4,7 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+/optimus-rcm-company-profile.pdf
+  Content-Type: application/pdf
+  Content-Disposition: attachment; filename="optimus-rcm-company-profile.pdf"
